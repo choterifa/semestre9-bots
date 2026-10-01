@@ -1,0 +1,14 @@
+# Configuración personal del estudiante (no compartir)
+config.json
+
+# Archivos de sistema y entorno
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/

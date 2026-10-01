@@ -1,0 +1,178 @@
+# ==============================================================================
+# PRACTICA: MOTOR DE RECOMENDACION MUSICAL CON INDICE DE JACCARD
+# MATERIA: INTELIGENCIA ARTIFICIAL
+# ==============================================================================
+
+# 1. Definir la Metrica de Similitud
+def calcular_jaccard(conjunto_a, conjunto_b):
+    interseccion = len(conjunto_a & conjunto_b)
+    union = len(conjunto_a | conjunto_b)
+    
+    # Protege contra division por cero ante conjuntos vacios
+    if union == 0:
+        return 0.0
+        
+    return interseccion / union
+
+
+# 2. Cargar los Datos (Catalogo de 100 canciones con 5 atributos cada una)
+catalogo_canciones = {
+    # Queen / Classic Rock (1-10)
+    "Bohemian Rhapsody": {"Rock", "Queen", "Años 70", "Ópera Rock", "Reino Unido"},
+    "Don't Stop Me Now": {"Rock", "Queen", "Años 70", "Pop Rock", "Reino Unido"},
+    "We Will Rock You": {"Rock", "Queen", "Años 70", "Arena Rock", "Reino Unido"},
+    "Another One Bites the Dust": {"Rock", "Queen", "Años 80", "Funk Rock", "Reino Unido"},
+    "Radio Ga Ga": {"Rock", "Queen", "Años 80", "Synth Rock", "Reino Unido"},
+    "Under Pressure": {"Rock", "Queen", "Años 80", "Pop Rock", "Reino Unido"},
+    "Somebody to Love": {"Rock", "Queen", "Años 70", "Gospel Rock", "Reino Unido"},
+    "Killer Queen": {"Rock", "Queen", "Años 70", "Glam Rock", "Reino Unido"},
+    "Crazy Little Thing Called Love": {"Rock", "Queen", "Años 70", "Rockabilly", "Reino Unido"},
+    "The Show Must Go On": {"Rock", "Queen", "Años 90", "Hard Rock", "Reino Unido"},
+
+    # Michael Jackson / Pop (11-20)
+    "Billie Jean": {"Pop", "Michael Jackson", "Años 80", "Dance", "Estados Unidos"},
+    "Beat It": {"Pop", "Michael Jackson", "Años 80", "Pop Rock", "Estados Unidos"},
+    "Thriller": {"Pop", "Michael Jackson", "Años 80", "Disco", "Estados Unidos"},
+    "Smooth Criminal": {"Pop", "Michael Jackson", "Años 80", "Pop", "Estados Unidos"},
+    "Bad": {"Pop", "Michael Jackson", "Años 80", "Dance Pop", "Estados Unidos"},
+    "Black or White": {"Pop", "Michael Jackson", "Años 90", "Dance Rock", "Estados Unidos"},
+    "Don't Stop 'Til You Get Enough": {"Pop", "Michael Jackson", "Años 70", "Disco", "Estados Unidos"},
+    "Man in the Mirror": {"Pop", "Michael Jackson", "Años 80", "R&B", "Estados Unidos"},
+    "The Way You Make Me Feel": {"Pop", "Michael Jackson", "Años 80", "R&B", "Estados Unidos"},
+    "Rock with You": {"Pop", "Michael Jackson", "Años 70", "Disco", "Estados Unidos"},
+
+    # The Beatles / 60s Rock (21-30)
+    "Hey Jude": {"Rock", "The Beatles", "Años 60", "Pop Rock", "Reino Unido"},
+    "Let It Be": {"Rock", "The Beatles", "Años 70", "Pop Rock", "Reino Unido"},
+    "Yesterday": {"Pop", "The Beatles", "Años 60", "Baroque Pop", "Reino Unido"},
+    "Come Together": {"Rock", "The Beatles", "Años 60", "Blues Rock", "Reino Unido"},
+    "Here Comes The Sun": {"Pop", "The Beatles", "Años 60", "Folk Pop", "Reino Unido"},
+    "Twist and Shout": {"Rock", "The Beatles", "Años 60", "Rock and Roll", "Reino Unido"},
+    "Help!": {"Rock", "The Beatles", "Años 60", "Pop Rock", "Reino Unido"},
+    "In My Life": {"Pop", "The Beatles", "Años 60", "Pop Rock", "Reino Unido"},
+    "A Day in the Life": {"Rock", "The Beatles", "Años 60", "Psychedelic Rock", "Reino Unido"},
+    "Blackbird": {"Folk", "The Beatles", "Años 60", "Acoustic", "Reino Unido"},
+
+    # Bad Bunny / Urban (31-40)
+    "Dákiti": {"Urbano", "Bad Bunny", "Años 2020", "Reggaeton", "Puerto Rico"},
+    "Safaera": {"Urbano", "Bad Bunny", "Años 2020", "Reggaeton", "Puerto Rico"},
+    "Tití Me Preguntó": {"Urbano", "Bad Bunny", "Años 2020", "Dembow", "Puerto Rico"},
+    "Callaíta": {"Urbano", "Bad Bunny", "Años 2010", "Reggaeton", "Puerto Rico"},
+    "Yo Perreo Sola": {"Urbano", "Bad Bunny", "Años 2020", "Reggaeton", "Puerto Rico"},
+    "Ojitos Lindos": {"Urbano", "Bad Bunny", "Años 2020", "Indie Pop", "Puerto Rico"},
+    "Mía": {"Urbano", "Bad Bunny", "Años 2010", "Reggaeton", "Puerto Rico"},
+    "Vete": {"Urbano", "Bad Bunny", "Años 2010", "Reggaeton", "Puerto Rico"},
+    "Amorfoda": {"Urbano", "Bad Bunny", "Años 2010", "Trap Latino", "Puerto Rico"},
+    "Me Porto Bonito": {"Urbano", "Bad Bunny", "Años 2020", "Reggaeton", "Puerto Rico"},
+
+    # Daft Punk / Electronic (41-50)
+    "Get Lucky": {"Electrónica", "Daft Punk", "Años 2010", "Disco", "Francia"},
+    "One More Time": {"Electrónica", "Daft Punk", "Años 2000", "French House", "Francia"},
+    "Harder, Better, Faster, Stronger": {"Electrónica", "Daft Punk", "Años 2000", "House", "Francia"},
+    "Around the World": {"Electrónica", "Daft Punk", "Años 90", "House", "Francia"},
+    "Lose Yourself to Dance": {"Electrónica", "Daft Punk", "Años 2010", "Disco", "Francia"},
+    "Instant Crush": {"Electrónica", "Daft Punk", "Años 2010", "Synthpop", "Francia"},
+    "Da Funk": {"Electrónica", "Daft Punk", "Años 90", "French House", "Francia"},
+    "Technologic": {"Electrónica", "Daft Punk", "Años 2000", "Electro House", "Francia"},
+    "Something About Us": {"Electrónica", "Daft Punk", "Años 2000", "Synthpop", "Francia"},
+    "Digital Love": {"Electrónica", "Daft Punk", "Años 2000", "French House", "Francia"},
+
+    # Metallica / Metal (51-60)
+    "Enter Sandman": {"Metal", "Metallica", "Años 90", "Heavy Metal", "Estados Unidos"},
+    "Nothing Else Matters": {"Metal", "Metallica", "Años 90", "Heavy Metal", "Estados Unidos"},
+    "Master of Puppets": {"Metal", "Metallica", "Años 80", "Thrash Metal", "Estados Unidos"},
+    "One": {"Metal", "Metallica", "Años 80", "Thrash Metal", "Estados Unidos"},
+    "The Unforgiven": {"Metal", "Metallica", "Años 90", "Heavy Metal", "Estados Unidos"},
+    "Fade to Black": {"Metal", "Metallica", "Años 80", "Thrash Metal", "Estados Unidos"},
+    "Sad But True": {"Metal", "Metallica", "Años 90", "Heavy Metal", "Estados Unidos"},
+    "For Whom the Bell Tolls": {"Metal", "Metallica", "Años 80", "Thrash Metal", "Estados Unidos"},
+    "Creeping Death": {"Metal", "Metallica", "Años 80", "Thrash Metal", "Estados Unidos"},
+    "Fuel": {"Metal", "Metallica", "Años 90", "Heavy Metal", "Estados Unidos"},
+
+    # Shakira / Latin Pop (61-70)
+    "Hips Don't Lie": {"Pop", "Shakira", "Años 2000", "Latin Pop", "Colombia"},
+    "Waka Waka": {"Pop", "Shakira", "Años 2010", "Latin Pop", "Colombia"},
+    "Whenever, Wherever": {"Pop", "Shakira", "Años 2000", "Latin Pop", "Colombia"},
+    "La Tortura": {"Pop", "Shakira", "Años 2000", "Reggaeton", "Colombia"},
+    "Antología": {"Pop", "Shakira", "Años 90", "Balada", "Colombia"},
+    "Ciega, Sordomuda": {"Pop", "Shakira", "Años 90", "Latin Pop", "Colombia"},
+    "Ojos Así": {"Pop", "Shakira", "Años 90", "Worldbeat", "Colombia"},
+    "Inevitable": {"Rock", "Shakira", "Años 90", "Pop Rock", "Colombia"},
+    "Loba": {"Pop", "Shakira", "Años 2000", "Electropop", "Colombia"},
+    "TQG": {"Urbano", "Shakira", "Años 2020", "Reggaeton", "Colombia"},
+
+    # Eminem / Hip Hop (71-80)
+    "Lose Yourself": {"Hip Hop", "Eminem", "Años 2000", "Rap Rock", "Estados Unidos"},
+    "Without Me": {"Hip Hop", "Eminem", "Años 2000", "Comedy Hip Hop", "Estados Unidos"},
+    "The Real Slim Shady": {"Hip Hop", "Eminem", "Años 2000", "Comedy Hip Hop", "Estados Unidos"},
+    "Stan": {"Hip Hop", "Eminem", "Años 2000", "Conscious Hip Hop", "Estados Unidos"},
+    "Rap God": {"Hip Hop", "Eminem", "Años 2010", "Chopper", "Estados Unidos"},
+    "Love the Way You Lie": {"Hip Hop", "Eminem", "Años 2010", "Pop Rap", "Estados Unidos"},
+    "Not Afraid": {"Hip Hop", "Eminem", "Años 2010", "Conscious Hip Hop", "Estados Unidos"},
+    "Mockingbird": {"Hip Hop", "Eminem", "Años 2000", "Conscious Hip Hop", "Estados Unidos"},
+    "Till I Collapse": {"Hip Hop", "Eminem", "Años 2000", "Hardcore Hip Hop", "Estados Unidos"},
+    "Godzilla": {"Hip Hop", "Eminem", "Años 2020", "Chopper", "Estados Unidos"},
+
+    # Frank Sinatra / Jazz (81-90)
+    "My Way": {"Jazz", "Frank Sinatra", "Años 60", "Vocal Jazz", "Estados Unidos"},
+    "Fly Me to the Moon": {"Jazz", "Frank Sinatra", "Años 60", "Swing", "Estados Unidos"},
+    "That's Life": {"Jazz", "Frank Sinatra", "Años 60", "Blues", "Estados Unidos"},
+    "Strangers in the Night": {"Jazz", "Frank Sinatra", "Años 60", "Vocal Pop", "Estados Unidos"},
+    "New York, New York": {"Jazz", "Frank Sinatra", "Años 70", "Big Band", "Estados Unidos"},
+    "The Way You Look Tonight": {"Jazz", "Frank Sinatra", "Años 60", "Swing", "Estados Unidos"},
+    "I've Got You Under My Skin": {"Jazz", "Frank Sinatra", "Años 50", "Swing", "Estados Unidos"},
+    "Somethin' Stupid": {"Pop", "Frank Sinatra", "Años 60", "Vocal Pop", "Estados Unidos"},
+    "Come Fly With Me": {"Jazz", "Frank Sinatra", "Años 50", "Vocal Jazz", "Estados Unidos"},
+    "Luck Be a Lady": {"Jazz", "Frank Sinatra", "Años 60", "Big Band", "Estados Unidos"},
+
+    # Rosalía / Flamenco Urbano (91-100)
+    "Malamente": {"Urbano", "Rosalía", "Años 2010", "Nuevo Flamenco", "España"},
+    "Despechá": {"Urbano", "Rosalía", "Años 2020", "Mambo", "España"},
+    "Con Altura": {"Urbano", "Rosalía", "Años 2010", "Reggaeton", "España"},
+    "Saoko": {"Urbano", "Rosalía", "Años 2020", "Reggaeton Alternativo", "España"},
+    "Bizcochito": {"Urbano", "Rosalía", "Años 2020", "Avant-Pop", "España"},
+    "Pienso en tu mirá": {"Urbano", "Rosalía", "Años 2010", "Nuevo Flamenco", "España"},
+    "Candy": {"Urbano", "Rosalía", "Años 2020", "Reggaeton", "España"},
+    "La Fama": {"Urbano", "Rosalía", "Años 2020", "Bachata", "España"},
+    "Di mi nombre": {"Urbano", "Rosalía", "Años 2010", "Nuevo Flamenco", "España"},
+    "A Palé": {"Urbano", "Rosalía", "Años 2010", "Trap", "España"}
+}
+
+# 3. Seleccionar la Cancion Actual
+cancion_actual = "Get Lucky"
+atributos_actual = catalogo_canciones[cancion_actual]
+
+
+# 4. Calcular Similitudes con el resto del catalogo
+similitudes = []
+
+for cancion, atributos in catalogo_canciones.items():
+    # Se excluye la cancion en reproduccion para evitar una recomendacion trivial del 100%
+    if cancion == cancion_actual:
+        continue
+        
+    indice = calcular_jaccard(atributos_actual, atributos)
+    atributos_compartidos = atributos_actual & atributos
+    similitudes.append((cancion, indice, atributos_compartidos))
+
+
+# 5. Ordenar y Obtener el Top 5 de Recomendaciones
+# Orden descendente por indice Jaccard para colocar las mayores coincidencias al inicio
+similitudes.sort(key=lambda elemento: elemento[1], reverse=True)
+top_5 = similitudes[:5]
+
+
+# Impresion de Resultados en Consola
+if __name__ == "__main__":
+    print("=" * 75)
+    print(f"CANCION ACTUAL: '{cancion_actual}'")
+    print(f"Atributos base: {atributos_actual}")
+    print("=" * 75)
+    print(f"TOP {len(top_5)} CANCIONES RECOMENDADAS (Item-to-Item):")
+    print("-" * 75)
+    
+    for posicion, (cancion, indice, compartidos) in enumerate(top_5, start=1):
+        porcentaje = indice * 100
+        print(f"{posicion}. {cancion}")
+        print(f"   Similitud: {porcentaje:.2f}% (Indice Jaccard: {indice:.4f})")
+        print(f"   Atributos en comun: {list(compartidos)}\n")

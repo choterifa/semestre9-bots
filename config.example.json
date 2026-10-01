@@ -1,0 +1,30 @@
+{
+  "estudiante": {
+    "nombre_completo": "Tu Nombre Completo Aquí",
+    "matricula": "E00000000",
+    "grado_grupo": "9° - Grupo 1",
+    "carrera": "INGENIERIA EN SISTEMAS COMPUTACIONALES"
+  },
+  "materias": {
+    "ia": {
+      "nombre": "INTELIGENCIA ARTIFICIAL",
+      "docente": "MORALES RAMÍREZ ULISES",
+      "plantilla": "templates/Portada_Inteligencia_Artificial_Base.docx"
+    },
+    "forense": {
+      "nombre": "INFORMÁTICA FORENSE",
+      "docente": "EDGAR ALEJANDRO SAGUNDO DUARTE",
+      "plantilla": "templates/Portada_Informatica_Forense_Base.docx"
+    },
+    "materia3": {
+      "nombre": "MATERIA 3",
+      "docente": "DOCENTE ASIGNADO",
+      "plantilla": ""
+    }
+  },
+  "preferencias": {
+    "directorio_salida": "~/Downloads",
+    "generar_doble_entregable": true,
+    "sistema_operativo": "auto"
+  }
+}
