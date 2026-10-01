@@ -97,11 +97,18 @@ El asistente debe detectar el sistema operativo del estudiante (vía `config.jso
 
 ### Capturas Reales de Consola y Carpeta de Evidencias:
 - NUNCA usar tarjetas simuladas ni imágenes sintéticas con PIL.
-- **En Windows:** Capturar la ventana nativa de **PowerShell** o **Windows Terminal** mostrando los comandos reales ejecutados con el prompt del sistema del alumno.
-- **En macOS:** Capturar la ventana nativa de **Terminal.app** mediante las herramientas del sistema con el prompt oficial.
+- **En Windows (Consola):** Capturar la ventana nativa de **PowerShell** o **Windows Terminal** mostrando los comandos reales ejecutados con el prompt del sistema del alumno.
+- **En macOS (Consola):** Capturar la ventana nativa de **Terminal.app** mediante las herramientas del sistema con el prompt oficial.
 - Subcarpeta obligatoria: `Evidencias_Capturas/`.
 - Nomenclatura ordenada: `01_paso1_estructura.png`, `02_paso4_hashes.png`.
 - Pie de figura en cursiva: *Figura X: [Descripción técnica formal y hallazgos observados]*.
+
+### Manejo de Aplicaciones Gráficas de Windows (.exe como HashMyFiles, QuickHash, FTK Imager):
+A menudo en Windows los docentes o alumnos utilizan herramientas visuales forenses (`.exe`). Dado que los agentes de IA operan en terminal y no pueden interactuar con interfaces gráficas cerradas de Windows:
+1. **Cálculo Previo de Datos:** La IA debe calcular y proporcionarle al alumno los valores exactos (hashes SHA-256, MD5, tamaños en bytes, metadatos) para que sepa de antemano qué resultado debe arrojar su aplicación `.exe`.
+2. **Ranura de Evidencia Asistida:** La IA indicará al alumno:
+   > *"He calculado los hashes de tu archivo. Abre tu aplicación (ej. HashMyFiles), arrastra el archivo y guarda tu captura de pantalla en `Evidencias_Capturas/02_hash_gui.png`. Yo me encargaré de integrarla automáticamente en el reporte Word con su pie de figura oficial."*
+3. **Alternativa 100% Automática (PowerShell):** Si el alumno prefiere no abrir aplicaciones externas manualmente, la IA le ofrecerá ejecutar los comandos equivalentes de PowerShell (`Get-FileHash` / `certutil`) para que la entrega quede lista de forma inmediata.
 
 ### Reglas Editoriales y Secciones Mayores:
 - **Saltos de página obligatorios (`add_page_break()`):** Cada sección mayor (Cadena de custodia, Verificación de integridad, Preguntas, Producto a entregar, Conclusión) inicia en hoja nueva.
