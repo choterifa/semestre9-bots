@@ -65,10 +65,10 @@ def solicitar_datos():
                 "docente": "EDGAR ALEJANDRO SAGUNDO DUARTE",
                 "plantilla": os.path.join(BASE_DIR, "templates", "Portada_Informatica_Forense_Base.docx")
             },
-            "materia3": {
-                "nombre": "MATERIA 3",
-                "docente": "DOCENTE ASIGNADO",
-                "plantilla": ""
+            "pentesting": {
+                "nombre": "PENTESTING",
+                "docente": "MARTÍNEZ GARCÍA HOLZEN",
+                "plantilla": os.path.join(BASE_DIR, "templates", "Portada_Pentesting_Base.docx")
             }
         },
         "preferencias": {

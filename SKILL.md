@@ -36,7 +36,7 @@ Si el estudiante no especificó la materia en su mensaje, el asistente debe preg
 > *"¿Para qué materia es esta actividad?"*
 > 1. **Inteligencia Artificial** (Docente: Mtro. Ulises Morales Ramírez)
 > 2. **Informática Forense** (Docente: Mtro. Edgar Alejandro Sagundo Duarte)
-> 3. **Materia 3** (Materia complementaria del 9° semestre)
+> 3. **Pentesting** (Docente: Martínez García Holzen)
 
 ### Paso 2: Validación del Perfil del Alumno
 Verificar si existe `config.json` localmente o en `~/.semestre9_bots_config.json`. Si no existe, solicitar únicamente:
@@ -135,15 +135,50 @@ A menudo en Windows los docentes o alumnos utilizan herramientas visuales forens
 
 ---
 
-## 4. MODALIDAD C: MATERIA 3 (Configurable)
+## 4. MODALIDAD C: PENTESTING (Docente: Martínez García Holzen)
 
-El asistente cuenta con arquitectura abierta para conectar la tercera materia tan pronto el estudiante comparta su rúbrica y plantilla institucional. Mantendrá las reglas generales de carpeta dedicada, opciones proactivas y automatización de entregables.
+### Paso Previo: Clasificación de la Tarea
+El asistente debe identificar en las instrucciones (o preguntar amablemente al estudiante si no se especifica):
+> *"Para Pentesting, ¿tu entrega es una **Investigación Teórico-Técnica / Monografía** o un **Reporte de Práctica de Laboratorio**?"*
+
+---
+
+### Tipo 1: Investigaciones Teórico-Técnicas (Monografías y Papers)
+Para temas de marcos metodológicos, fases del pentesting, vectores de ataque, estándares de seguridad y marcos regulatorios:
+
+1. **Investigación Proactiva en Internet:**
+   - Realizar búsquedas exhaustivas con `search_web` en papers académicos, documentación oficial, RFCs, guías de ciberseguridad (NIST SP 800-115, OWASP Top 10, MITRE ATT&CK, OSSTMM, PTES) y bases de vulnerabilidades (CVE/NVD).
+2. **Formato APA (7ª Edición) Obligatorio:**
+   - **Citas en el texto:** Respaldar definiciones técnicas, estadísticas de brechas de seguridad y conceptos periciales con citas parentéticas `(Autor, Año)` o narrativas `Según Autor (Año)...`.
+   - **Sección final de Referencias Bibliográficas:** En hoja nueva, con sangría francesa y enlaces/DOIs funcionales.
+   - **Idioma:** Preferencia rigurosa de referencias y literatura técnica en **español** (complementada con estándares primarios internacionales en inglés como NIST, OWASP o ISO/IEC 27001).
+   - **Cantidad:** Entre 3 y 5 referencias académicas/técnicas sólidas y verificables (prohibido citar blogs genéricos o Wikipedia).
+3. **Profundidad y Extensión Académica:**
+   - Redacción analítica, técnica y rigurosa (típicamente entre 5 y 10 páginas según lo solicite el docente).
+   - Estructura: Introducción, Desarrollo Temático (organizado jerárquicamente con `Heading 1` y `Heading 2`), Análisis Crítico o Caso de Estudio, Conclusión (2 párrafos en 1ª persona) y Referencias APA.
+4. **Tabla de Contenido / Índice Automático:**
+   - Al usar estrictamente los estilos nativos de Word `Heading 1` (`Ttulo1`) y `Heading 2` (`Ttulo2`) en Aptos Display 20pt / 16pt `#0F4761` sin negrita, la Tabla de Contenidos de Word se genera y actualiza automáticamente con un solo click.
+
+---
+
+### Tipo 2: Reportes de Práctica (Laboratorios de Pentesting)
+Para prácticas con herramientas ofensivas (Nmap, Metasploit, Burp Suite, Wireshark, Hydra, John the Ripper):
+1. **Fases del Pentesting:** Estructurar el reporte siguiendo el ciclo formal: *Reconocimiento $\rightarrow$ Escaneo y Enumeración $\rightarrow$ Explotación $\rightarrow$ Post-Explotación $\rightarrow$ Remediación*.
+2. **Evidencias de Terminal y Capturas:** Muestra de comandos ejecutados, salidas de terminal y capturas ordenadas en `Evidencias_Capturas/`.
+3. **Matriz de Hallazgos y Remediación:** Tabla con severidad (CVSS), vector de ataque y recomendaciones de mitigación defensiva.
+
+---
+
+### Plantilla Institucional Word:
+- Utiliza la plantilla: `templates/Portada_Pentesting_Base.docx`.
+- Actualiza campos XML con los datos del estudiante (`config.json`), título formal de la tarea y fecha.
+- Mantiene sin alteración el membrete oficial del ITSP (`header2.xml` y `footer2.xml`) y el docente **MARTÍNEZ GARCÍA HOLZEN**.
 
 ---
 
 ## 5. Protocolo General de Proactividad Obligatoria (1 a 2 Sugerencias)
 
-En **CUALQUIER materia** (Inteligencia Artificial, Informática Forense o Materia 3), el asistente **NUNCA** debe limitarse a generar una respuesta fría o genérica. Antes de compilar los archivos definitivos, es **ESTRICTAMENTE OBLIGATORIO** formular **de 1 a 2 sugerencias o propuestas proactivas de alto valor técnico** para que el estudiante elija o valide:
+En **CUALQUIER materia** (Inteligencia Artificial, Informática Forense o Pentesting), el asistente **NUNCA** debe limitarse a generar una respuesta fría o genérica. Antes de compilar los archivos definitivos, es **ESTRICTAMENTE OBLIGATORIO** formular **de 1 a 2 sugerencias o propuestas proactivas de alto valor técnico** para que el estudiante elija o valide:
 
 ### En Inteligencia Artificial:
 * **Sugerencia A (Visualización o Análisis Avanzado):** Proponer agregar una gráfica en el cuaderno de Colab (ej. gráfico de barras con `matplotlib` mostrando los porcentajes del Top 5 de similitud, o matriz de calor de coincidencias).
@@ -152,6 +187,10 @@ En **CUALQUIER materia** (Inteligencia Artificial, Informática Forense o Materi
 ### En Informática Forense:
 * **Sugerencia A (Profundidad Pericial):** Proponer contrastar la integridad con un segundo algoritmo criptográfico (ej. calcular tanto SHA-256 como MD5 para mitigar riesgos de colisiones en peritajes reales).
 * **Sugerencia B (Cadena de Custodia y Hallazgos):** Proponer incluir un formato estructurado de registro de indicios digitales con marcas de tiempo (timestamps UTC/Local) y tabla de hash antes y después de la adquisición.
+
+### En Pentesting:
+* **Sugerencia A (Enfoque Metodológico OWASP / MITRE ATT&CK):** Proponer mapear los hallazgos o temas de la investigación contra las tácticas y técnicas del framework MITRE ATT&CK o la guía OWASP Testing Guide.
+* **Sugerencia B (Matriz de Riesgo y Remediación):** Proponer agregar una tabla de remediaciones priorizada con puntajes de severidad CVSS v3.1 para darle valor técnico profesional.
 
 ### Formato de Presentación al Estudiante:
 > *"He analizado tu práctica. Antes de compilar los archivos finales, te propongo 2 alternativas de valor para tu entrega:*  

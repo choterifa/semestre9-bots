@@ -32,6 +32,8 @@ def obtener_plantilla(materia="ia"):
         return os.path.join(TEMPLATES_DIR, "Portada_Inteligencia_Artificial_Base.docx")
     elif materia.lower() in ["forense", "informatica forense", "informática forense"]:
         return os.path.join(TEMPLATES_DIR, "Portada_Informatica_Forense_Base.docx")
+    elif materia.lower() in ["pentesting", "holzen", "olsen"]:
+        return os.path.join(TEMPLATES_DIR, "Portada_Pentesting_Base.docx")
     else:
         # Por defecto IA
         return os.path.join(TEMPLATES_DIR, "Portada_Inteligencia_Artificial_Base.docx")

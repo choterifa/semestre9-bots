@@ -13,7 +13,7 @@
 | :--- | :--- | :--- | :--- |
 | **Inteligencia Artificial** | Mtro. Ulises Morales Ramírez | Carpeta con `.ipynb` (Google Colab) + `.py` (script autónomo) | *Clean Code* en español (comentarios en el *por qué*), fórmulas KaTeX y salidas precalculadas. |
 | **Informática Forense** | Mtro. Edgar Alejandro Sagundo Duarte | Reporte Técnico Oficial en Word (`.docx`) | Estilos nativos (`Heading 1` / `Heading 2` en Aptos Display 20pt/16pt `#0F4761`), tablas sin color, capturas reales de terminal y conclusión en 1ª persona. |
-| **Materia 3** | Docente Asignado | *Configurable* | Arquitectura abierta lista para agregar los lineamientos de la 3ª materia. |
+| **Pentesting** | Docente: Martínez García Holzen | Investigaciones Académicas (APA 7ª) o Reportes de Labs | Búsquedas de papers/estándares (OWASP/MITRE/NIST), citas en texto, 3-5 referencias en español, tablas de remediación y Word oficial. |
 
 ---
 
