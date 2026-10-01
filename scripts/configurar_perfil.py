@@ -36,21 +36,14 @@ def solicitar_datos():
     grupo = "9° - Grupo 1"
     carrera = "INGENIERIA EN SISTEMAS COMPUTACIONALES"
 
-    # Detección automática del Sistema Operativo
+    # Detección automática del Sistema Operativo y carpeta de Descargas
     sistema_actual = "Windows" if sys.platform.startswith("win") else ("macOS" if sys.platform == "darwin" else "Linux")
     
-    # Directorio de Descargas nativo según el sistema
     if sistema_actual == "Windows":
         perfil_usuario = os.environ.get("USERPROFILE", "C:\\Users\\Default")
-        ruta_defecto = os.path.join(perfil_usuario, "Downloads")
+        ruta_salida = os.path.join(perfil_usuario, "Downloads")
     else:
-        ruta_defecto = os.path.expanduser("~/Downloads")
-
-    ruta_salida = input(f"📁 Carpeta donde guardar tus tareas [Enter para '{ruta_defecto}']: ").strip()
-    if not ruta_salida:
-        ruta_salida = ruta_defecto
-    else:
-        ruta_salida = os.path.expanduser(ruta_salida)
+        ruta_salida = os.path.expanduser("~/Downloads")
 
     os.makedirs(ruta_salida, exist_ok=True)
 

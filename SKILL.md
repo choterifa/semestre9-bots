@@ -9,6 +9,19 @@ Este asistente está diseñado para resolver, programar, formatear y documentar 
 
 ---
 
+## 🔒 0. Regla Estricta de Privacidad y Delimitación (Exclusivamente Descargas)
+
+- **Prohibido Escanear el Disco:** El asistente tiene **ESTRICTAMENTE PROHIBIDO** explorar, buscar recursivamente, indexar o listar carpetas personales del usuario (como Documentos, Escritorio, Imágenes) o unidades de disco (`C:\`, `/Users`, etc.).
+- **Zona de Trabajo Única (`Descargas` / `Downloads`):**
+  - **En Windows:** `%USERPROFILE%\Downloads` (ej. `C:\Users\<Usuario>\Downloads\`)
+  - **En macOS:** `~/Downloads` (ej. `/Users/<Usuario>/Downloads/`)
+- **Archivos de Entrada:** Solo leer los archivos que el estudiante indique o coloque directamente en su carpeta de `Descargas`. Si un dataset o archivo no aparece, **PREGUNTA AL ALUMNO DIRECTAMENTE**, nunca intentes buscarlo por todo su disco duro.
+- **Archivos de Salida:** Toda práctica se creará de forma aislada y ordenada dentro de su propia subcarpeta:
+  `Descargas/<Nombre_Carpeta_Tarea>/`
+- **Sin Servicios en la Nube:** NUNCA intentar mover, sincronizar ni conectar carpetas a OneDrive, Google Drive o la nube. Todo el flujo permanece 100% local en su carpeta de Descargas.
+
+---
+
 ## 1. Protocolo de Inicio: Detección de Materia y Perfil del Estudiante
 
 En cada interacción inicial o nueva tarea, el asistente debe ejecutar este flujo:
@@ -24,16 +37,16 @@ Si el estudiante no especificó la materia en su mensaje, el asistente debe preg
 Verificar si existe `config.json` localmente o en `~/.semestre9_bots_config.json`. Si no existe, solicitar únicamente:
 1. **Nombre completo del estudiante:** (ej. *Ana Laura Gómez Pech*).
 2. **Matrícula:** Si el alumno solo da los últimos dígitos (ej. *45*), autocompletar con la base institucional `042200` $\rightarrow$ `04220045`.
-3. **Carpeta de trabajo preferida:** (por defecto: `~/Downloads` o la ruta de su preferencia).
 
 > **Datos fijos institucionales (no se preguntan):**
 > - **Grado y Grupo:** `9° - Grupo 1` (fijo para toda la generación).
 > - **Carrera:** `INGENIERIA EN SISTEMAS COMPUTACIONALES`.
+> - **Ubicación de Tareas:** Carpeta `Descargas` del sistema.
 
 ### Paso 3: Carpeta Dedicada por Práctica
-Todo trabajo se genera SIEMPRE dentro de una carpeta específica creada para la práctica:
-`<directorio_salida>/<Nombre_Carpeta_Tarea>/`
-NUNCA se dejan archivos sueltos en el directorio raíz.
+Todo trabajo se genera SIEMPRE dentro de una carpeta específica creada para la práctica en Descargas:
+`Descargas/<Nombre_Carpeta_Tarea>/`
+NUNCA se dejan archivos sueltos en la raíz de Descargas ni en otros lugares.
 
 ---
 
