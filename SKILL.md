@@ -84,9 +84,21 @@ Enfocado en cadena de custodia, adquisición forense, cálculo de hashes criptog
 - Encabezados en negrita (Aptos 9.5 pt). Datos en Aptos 9 pt.
 - Propiedades `cantSplit` en todas las filas y `tblHeader` en la fila superior.
 
+### Adaptación Automática de Sistema Operativo (Windows vs macOS):
+El asistente debe detectar el sistema operativo del estudiante (vía `config.json` o entorno) y adaptar dinámicamente los comandos, rutas y evidencias de consola:
+
+| Acción Forense | Entorno Windows (PowerShell / CMD) | Entorno macOS (Terminal zsh) |
+| :--- | :--- | :--- |
+| **Cálculo de Hash SHA-256** | `Get-FileHash <archivo> -Algorithm SHA256` o `certutil -hashfile <archivo> SHA256` | `shasum -a 256 <archivo>` |
+| **Cálculo de Hash MD5** | `Get-FileHash <archivo> -Algorithm MD5` o `certutil -hashfile <archivo> MD5` | `md5 <archivo>` |
+| **Estructura de Carpetas** | `tree /F` | `find .` o `tree` |
+| **Formato de Rutas** | Notación Windows: `C:\Users\<Usuario>\Downloads\...` | Notación Unix: `/Users/<Usuario>/Downloads/...` |
+| **Prompt Oficial de Consola** | `PS C:\Users\<Usuario>\Downloads\Practica> ` | `usuario@MacBook-Air-... % ` |
+
 ### Capturas Reales de Consola y Carpeta de Evidencias:
 - NUNCA usar tarjetas simuladas ni imágenes sintéticas con PIL.
-- Ejecutar en vivo los comandos forenses reales y capturar la ventana oficial de Terminal.
+- **En Windows:** Capturar la ventana nativa de **PowerShell** o **Windows Terminal** mostrando los comandos reales ejecutados con el prompt del sistema del alumno.
+- **En macOS:** Capturar la ventana nativa de **Terminal.app** mediante las herramientas del sistema con el prompt oficial.
 - Subcarpeta obligatoria: `Evidencias_Capturas/`.
 - Nomenclatura ordenada: `01_paso1_estructura.png`, `02_paso4_hashes.png`.
 - Pie de figura en cursiva: *Figura X: [Descripción técnica formal y hallazgos observados]*.
