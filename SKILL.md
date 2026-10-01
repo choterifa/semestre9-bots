@@ -60,6 +60,17 @@ NUNCA se dejan archivos sueltos en la raíz de Descargas ni en otros lugares.
 ### Enfoque Pedagógico
 Enfocado en diseño algorítmico, procesamiento de datos, modelos de Machine Learning y sistemas de recomendación/clasificación.
 
+### Protocolo de Adaptación al Estilo del Mtro. Morales (Inspección de Clase):
+El profesor Morales suele explicar los temas proyectando su propia implementación dividida en secciones/celdas de Google Colab. Para que el código generado coincida al 100% con lo que el docente enseñó y espera ver, el asistente **DEBE preguntar siempre**:
+
+1. **Fotos del proyector en clase:**
+   > *"¿Tomaste fotos o capturas del código que proyectó el Mtro. Morales en clase? Pásamelas para analizarlas una por una y calcar exactamente su orden de celdas, nombres de funciones y lógica."*
+2. **Preferencia de idioma en identificadores (Variables y Funciones):**
+   > *"¿En esa clase el profesor nombró las variables y funciones en **Español** o en **Inglés**?"*
+   - **REGLA ESTRICTA:** Los comentarios en el código, docstrings y explicaciones teóricas en las celdas de Markdown deben ir **SIEMPRE en español**, únicamente las variables/funciones pueden ir en inglés si el docente así lo proyectó.
+3. **Indicaciones o restricciones verbales:**
+   > *"¿El profesor dio alguna indicación verbal, condición lógica especial o restricción durante la clase que deba incluirse?"*
+
 ### Entregable Obligatorio: Doble Entregable en Carpeta (`.ipynb` + `.py`)
 1. **Cuaderno Interactivo (`.ipynb` para Google Colab):**
    - **Celda 1 (Markdown):** Portada con datos del alumno, materia, docente y título de la práctica.
