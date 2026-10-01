@@ -74,6 +74,10 @@ Enfocado en diseño algorítmico, procesamiento de datos, modelos de Machine Lea
 - Identificadores en español y descriptivos (`calcular_jaccard`, `atributos_actual`, `similitudes`).
 - **Comentarios mínimos orientados al POR QUÉ:** Solo justificar decisiones de diseño, casos de frontera o restricciones del problema. Prohibido comentar el QUÉ.
 - Operaciones nativas de `set()` (`&`, `|`, `-`).
+- **PROHIBIDO EL USO DE EMOJIS O ÍCONOS EN CÓDIGO Y CONSOLA:**
+  - Queda **estrictamente prohibido** incluir emojis (ej. 🎵, 🎧, 🚀, 🤖, 💻, ✅, etc.) dentro de strings de `print()`, comentarios, docstrings o salidas de consola.
+  - Las impresiones en pantalla deben ser texto plano sobrio, técnico y limpio, con formato estándar de laboratorio de ingeniería (ej. `[INFO] CANCION ACTUAL: 'Get Lucky'`, `=== TOP 5 RECOMENDACIONES ===`).
+  - *Razón técnica:* En Windows (PowerShell/CMD) los emojis provocan errores de codificación (`UnicodeEncodeError: 'charmap'`) y, además, delatan inmediatamente ante el docente que el código fue redactado por una inteligencia artificial.
 
 ### Reporte Word (.docx) (Solo si el docente lo solicita):
 - Plantilla: `templates/Portada_Inteligencia_Artificial_Base.docx`.
