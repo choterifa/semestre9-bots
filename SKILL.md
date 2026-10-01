@@ -21,14 +21,14 @@ Si el estudiante no especificó la materia en su mensaje, el asistente debe preg
 > 3. **Materia 3** (Materia complementaria del 9° semestre)
 
 ### Paso 2: Validación del Perfil del Alumno
-Verificar si existe `config.json` localmente o en `~/.itsp_ia_config.json`. Si no existe, solicitar amablemente:
-1. **Nombre completo del estudiante** (para portadas y encabezados).
-2. **Matrícula / No. de Control** (opcional).
-3. **Grado y Grupo** (por defecto: `9° - Grupo 1`).
-4. **Carpeta de trabajo preferida** (por defecto: `~/Downloads` o ruta personalizada).
-5. **Sistema Operativo** (macOS / Windows / Linux).
+Verificar si existe `config.json` localmente o en `~/.semestre9_bots_config.json`. Si no existe, solicitar únicamente:
+1. **Nombre completo del estudiante:** (ej. *Ana Laura Gómez Pech*).
+2. **Matrícula:** Si el alumno solo da los últimos dígitos (ej. *45*), autocompletar con la base institucional `042200` $\rightarrow$ `04220045`.
+3. **Carpeta de trabajo preferida:** (por defecto: `~/Downloads` o la ruta de su preferencia).
 
-*(Una vez ingresados, se almacenan para no volver a solicitarlos).*
+> **Datos fijos institucionales (no se preguntan):**
+> - **Grado y Grupo:** `9° - Grupo 1` (fijo para toda la generación).
+> - **Carrera:** `INGENIERIA EN SISTEMAS COMPUTACIONALES`.
 
 ### Paso 3: Carpeta Dedicada por Práctica
 Todo trabajo se genera SIEMPRE dentro de una carpeta específica creada para la práctica:

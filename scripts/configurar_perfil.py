@@ -23,15 +23,18 @@ def solicitar_datos():
         print("El nombre no puede estar vacío.")
         nombre = input("👤 Tu nombre completo: ").strip()
 
-    matricula = input("🆔 Matrícula / No. de Control (opcional): ").strip()
-    
-    grupo = input("🏫 Grado y Grupo [Enter para '9° - Grupo 1']: ").strip()
-    if not grupo:
-        grupo = "9° - Grupo 1"
+    # La matrícula tiene base institucional fija 042200
+    entrada_mat = input("🆔 Matrícula (completa o últimos dígitos tras 042200): ").strip()
+    if not entrada_mat:
+        matricula = "04220000"
+    elif entrada_mat.startswith("042200"):
+        matricula = entrada_mat
+    else:
+        matricula = f"042200{entrada_mat}"
 
-    carrera = input("📚 Carrera [Enter para 'INGENIERIA EN SISTEMAS COMPUTACIONALES']: ").strip()
-    if not carrera:
-        carrera = "INGENIERIA EN SISTEMAS COMPUTACIONALES"
+    # Grado y grupo fijos para toda la generación
+    grupo = "9° - Grupo 1"
+    carrera = "INGENIERIA EN SISTEMAS COMPUTACIONALES"
 
     ruta_defecto = os.path.expanduser("~/Downloads")
     ruta_salida = input(f"📁 Carpeta donde guardar tus tareas [Enter para '{ruta_defecto}']: ").strip()
