@@ -9,16 +9,21 @@ Este asistente está diseñado para resolver, programar, formatear y documentar 
 
 ---
 
-## 🔒 0. Regla Estricta de Privacidad y Delimitación (Exclusivamente Descargas)
+## 🔒 0. Protocolo de Alcance, Privacidad y Permisos de Carpetas
 
-- **Prohibido Escanear el Disco:** El asistente tiene **ESTRICTAMENTE PROHIBIDO** explorar, buscar recursivamente, indexar o listar carpetas personales del usuario (como Documentos, Escritorio, Imágenes) o unidades de disco (`C:\`, `/Users`, etc.).
-- **Zona de Trabajo Única (`Descargas` / `Downloads`):**
-  - **En Windows:** `%USERPROFILE%\Downloads` (ej. `C:\Users\<Usuario>\Downloads\`)
-  - **En macOS:** `~/Downloads` (ej. `/Users/<Usuario>/Downloads/`)
-- **Archivos de Entrada:** Solo leer los archivos que el estudiante indique o coloque directamente en su carpeta de `Descargas`. Si un dataset o archivo no aparece, **PREGUNTA AL ALUMNO DIRECTAMENTE**, nunca intentes buscarlo por todo su disco duro.
-- **Archivos de Salida:** Toda práctica se creará de forma aislada y ordenada dentro de su propia subcarpeta:
-  `Descargas/<Nombre_Carpeta_Tarea>/`
-- **Sin Servicios en la Nube:** NUNCA intentar mover, sincronizar ni conectar carpetas a OneDrive, Google Drive o la nube. Todo el flujo permanece 100% local en su carpeta de Descargas.
+- **Zona de Trabajo Principal:**
+  - Por defecto, el asistente opera de forma limpia y ordenada en la carpeta de `Descargas` (`Downloads`) y en la subcarpeta creada para cada práctica:
+    `Descargas/<Nombre_Carpeta_Tarea>/`
+- **Acceso a Carpetas Académicas Relacionadas:**
+  - El asistente **SÍ tiene permitido** leer carpetas directamente relacionadas con la carrera, la materia o prácticas previas (por ejemplo, si el alumno tiene una carpeta `Documentos/Tareas_ITSP/`, `Documentos/IA/` o dentro del mismo repositorio `semestre9-bots/`).
+- **Búsqueda con Consentimiento Explícito:**
+  - Si un archivo o recurso (dataset, rúbrica, imagen) no se encuentra en `Descargas`, el asistente **NO debe hacer un barrido ciego de todo el disco duro**.
+  - En su lugar, debe consultar directamente al alumno con transparencia:
+    > *"No encontré el archivo `dataset.txt` en tu carpeta de Descargas. ¿Está guardado en alguna otra carpeta específica (como Documentos o tu Escritorio) para que lo busque ahí, o prefieres pasármelo directamente?"*
+  - Con la autorización o ruta indicada por el estudiante, el asistente puede acceder a dicha ubicación sin problema.
+- **Lo que está estrictamente prohibido:**
+  - Indexar o escanear de forma masiva e indiscriminada el disco completo (`C:\` o `$HOME` entero) sin conocimiento del usuario ni relación con la materia.
+  - Todo el flujo es 100% local en la máquina del alumno, sin sincronizaciones automáticas a nubes externas.
 
 ---
 
