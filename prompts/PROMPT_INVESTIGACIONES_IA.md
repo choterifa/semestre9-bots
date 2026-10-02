@@ -52,8 +52,16 @@ El documento final debe organizarse de forma estricta con saltos de página form
 5. **Hoja aparte ➔ 5. Conclusiones:**  
    Debe comenzar obligatoriamente en una hoja nueva. Dos párrafos analíticos en tercera persona impersonal sintetizando los aprendizajes técnicos y el impacto del tema.  
    `[Salto de página obligatorio]`
-6. **Hoja aparte ➔ 6. Referencias Bibliográficas:**  
-   Debe comenzar obligatoriamente en una hoja nueva. Referencias completas en formato APA 7ª edición, con sangría francesa y fuentes científicas verificables.
+6. **Hoja aparte ➔ Referencias Bibliográficas:**  
+   - Debe comenzar obligatoriamente en una hoja nueva.
+   - **Límite Estricto:** Máximo 6 referencias académicas esenciales (las fuentes más representativas e influyentes del tema, sin sobrecargar la lista).
+   - **Formato:** APA 7ª edición, con sangría francesa y fuentes científicas verificables con DOI/URL.
+
+---
+
+## 📊 Tablas y Recursos Visuales
+- **Tablas Institucionales:** Mantener tablas con formato ITSP (cabecera `#0F4761`, texto blanco, bordes limpios) cuando el contenido requiera clasificaciones o comparaciones (ej. stopwords, comparativas de métricas).
+- **Imágenes:** Máximo 3 imágenes reales descargadas de la web (diagramas vectoriales, curvas matemáticas, fórmulas) con pie de figura formal numerado.
 
 ---
 

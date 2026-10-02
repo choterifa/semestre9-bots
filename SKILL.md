@@ -108,8 +108,12 @@ Para tareas de investigación teórica (como monografías de conceptos de PLN, h
    - Hoja 3: 1. Introducción `[Salto de página]`
    - Hojas 4+: Desarrollo continuo con interlineado 1.5 `[Salto de página]`
    - Hoja aparte: 5. Conclusiones `[Salto de página]`
-   - Hoja aparte: 6. Referencias (APA 7ª ed.).
-4. **Imágenes y Extensión:** Máximo 3 imágenes reales descargadas de internet con pie de figura formal; extensión total acotada entre 12 y 15 páginas (máximo 20).
+   - Hoja aparte: 6. Referencias (APA 7ª ed., exactamente máximo 6 fuentes esenciales).
+4. **Tablas, Imágenes y Extensión:**
+   - Tablas comparativas/clasificatorias institucionales con cabecera `#0F4761` cuando el tema lo amerite (ej. stopwords, comparativas).
+   - Máximo 3 imágenes reales descargadas de internet con pie de figura formal.
+   - Máximo 6 referencias bibliográficas representativas.
+   - Extensión total acotada entre 12 y 15 páginas (máximo 20).
 
 ---
 
