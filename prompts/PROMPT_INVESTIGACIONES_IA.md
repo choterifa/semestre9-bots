@@ -40,8 +40,10 @@ El documento final debe organizarse de forma estricta con saltos de página form
 1. **Hoja 1 ➔ Portada Oficial Completa:**  
    Membrete institucional del ITSP, logotipos oficiales, cajas de texto actualizadas con los datos del estudiante (Carlos Eduardo Valencia Hernández, Matrícula `04220057`, Grupo 9° - 1), docente (Mtro. Ulises Morales Ramírez), materia y fecha exacta.  
    `[Salto de página obligatorio]`
-2. **Hoja 2 ➔ Contenido / Índice (TOC):**  
-   Encabezado formal institucional y tabla de contenido estructurada con números de página reales.  
+2. **Hoja 2 ➔ Índice / Tabla de Contenido NATIVA de Word (ÚNICAMENTE):**  
+   - **CERO BANNERS NI ENCABEZADOS REPETIDOS:** Queda estrictamente PROHIBIDO generar banners, subtítulos o encabezados redundantes con el título de la investigación, docente o materia arriba del índice en la Hoja 2.
+   - **Uso Exclusivo de Tabla de Contenido Nativa de Word:** Utilizar el bloque SDT nativo de Word (`Referencias -> Tabla de contenido`), vinculado directamente a los estilos `Heading 1` y `Heading 2`. De este modo Word lo genera y actualiza en automático sin tablas estáticas manuales.
+   - **Título formal:** Únicamente el encabezado "Contenido" (con estilo `TtuloTDC` / `TOC Heading` para evitar auto-indexación).  
    `[Salto de página obligatorio]`
 3. **Hoja 3 ➔ 1. Introducción al Tema:**  
    Planteamiento contextual del problema, motivación de la investigación y justificación técnica.  

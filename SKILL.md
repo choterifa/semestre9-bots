@@ -104,7 +104,7 @@ Para tareas de investigación teórica (como monografías de conceptos de PLN, h
 2. **Reglas de Redacción:** Voz en tercera persona impersonal, tono de estudiante de alto rendimiento de ISC, CERO asteriscos (`*`), sin cajas ni notas intrusivas con emojis.
 3. **Estructura de Saltos de Página:**
    - Hoja 1: Portada oficial ITSP `[Salto de página]`
-   - Hoja 2: Contenido / Índice `[Salto de página]`
+   - Hoja 2: Contenido / Índice NATIVO de Word (ÚNICAMENTE el índice nativo mediante bloque SDT 'Referencias -> Tabla de contenido' enlazado a Heading 1/2; CERO banners o encabezados repetidos con el nombre de la tarea) `[Salto de página]`
    - Hoja 3: 1. Introducción `[Salto de página]`
    - Hojas 4+: Desarrollo continuo con interlineado 1.5 `[Salto de página]`
    - Hoja aparte: 5. Conclusiones `[Salto de página]`

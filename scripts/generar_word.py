@@ -80,6 +80,11 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
                 xml_text = re.sub(r'<w:t>Septiembre</w:t></w:r><w:r[^>]*>(?:<w:rPr>.*?</w:rPr>)?<w:t[^>]*>\s*de 2026</w:t>', f'<w:t>{fecha}</w:t>', xml_text)
                 
                 content = xml_text.encode("utf-8")
+            elif item.filename == "word/settings.xml":
+                xml_settings = content.decode("utf-8")
+                if "updateFields" not in xml_settings:
+                    xml_settings = xml_settings.replace("</w:settings>", '<w:updateFields xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" w:val="true"/></w:settings>')
+                content = xml_settings.encode("utf-8")
             zout.writestr(item, content)
 
     print(f"✅ Documento base institucional generado en: {ruta_salida}")
@@ -87,6 +92,77 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
     print(f"   📋 Tarea: {titulo_tarea}")
     print(f"   📅 Fecha: {fecha}")
     return ruta_salida
+
+def insertar_tabla_contenido_nativa(doc):
+    """
+    Inserta la Tabla de Contenidos nativa de Microsoft Word (Referencias -> Tabla de contenido)
+    en la Hoja 2 del documento.
+    Elimina cualquier banner repetido o texto previo de la portada en Hoja 2,
+    dejando únicamente el encabezado 'Contenido' y el bloque SDT nativo de Word
+    enlazado a los estilos Heading 1, Heading 2 y Heading 3.
+    """
+    from docx.oxml import parse_xml
+    from docx.oxml.ns import nsdecls
+
+    sdt_xml = (
+        f'<w:sdt {nsdecls("w")}>\n'
+        f'  <w:sdtPr>\n'
+        f'    <w:docPartObj>\n'
+        f'      <w:docPartGallery w:val="Table of Contents"/>\n'
+        f'      <w:docPartUnique/>\n'
+        f'    </w:docPartObj>\n'
+        f'  </w:sdtPr>\n'
+        f'  <w:sdtContent>\n'
+        f'    <w:p>\n'
+        f'      <w:pPr>\n'
+        f'        <w:pStyle w:val="TtuloTDC"/>\n'
+        f'        <w:spacing w:before="120" w:after="240"/>\n'
+        f'      </w:pPr>\n'
+        f'      <w:r>\n'
+        f'        <w:rPr>\n'
+        f'          <w:rFonts w:ascii="Calibri" w:hAnsi="Calibri"/>\n'
+        f'          <w:b/>\n'
+        f'          <w:color w:val="0F4761"/>\n'
+        f'          <w:sz w:val="32"/>\n'
+        f'        </w:rPr>\n'
+        f'        <w:t>Contenido</w:t>\n'
+        f'      </w:r>\n'
+        f'    </w:p>\n'
+        f'    <w:p>\n'
+        f'      <w:pPr>\n'
+        f'        <w:pStyle w:val="TDC1"/>\n'
+        f'        <w:tabs>\n'
+        f'          <w:tab w:val="right" w:leader="dot" w:pos="9350"/>\n'
+        f'        </w:tabs>\n'
+        f'      </w:pPr>\n'
+        f'      <w:r>\n'
+        f'        <w:fldChar w:fldCharType="begin"/>\n'
+        f'      </w:r>\n'
+        f'      <w:r>\n'
+        f'        <w:instrText xml:space="preserve"> TOC \\o "1-3" \\h \\z \\u </w:instrText>\n'
+        f'      </w:r>\n'
+        f'      <w:r>\n'
+        f'        <w:fldChar w:fldCharType="separate"/>\n'
+        f'      </w:r>\n'
+        f'      <w:r>\n'
+        f'        <w:fldChar w:fldCharType="end"/>\n'
+        f'      </w:r>\n'
+        f'    </w:p>\n'
+        f'  </w:sdtContent>\n'
+        f'</w:sdt>'
+    )
+    sdt = parse_xml(sdt_xml)
+    if len(doc.paragraphs) > 2:
+        doc.paragraphs[2]._p.addprevious(sdt)
+        for p in list(doc.paragraphs[2:5]):
+            if p._p.getparent() is not None:
+                p._p.getparent().remove(p._p)
+        for p in list(doc.paragraphs[2:]):
+            if p.text == '' and len(p._p.findall('.//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}br')) == 0:
+                if p._p.getparent() is not None:
+                    p._p.getparent().remove(p._p)
+    else:
+        doc._body._body.append(sdt)
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
