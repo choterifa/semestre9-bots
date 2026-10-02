@@ -29,7 +29,12 @@ Para cada concepto o métrica de la investigación, la redacción debe estructur
 
 ---
 
-## 📑 Estructura Obligatoria de Hojas y Saltos de Página
+## 🏷️ Nomenclatura de Títulos y Subtítulos (Mapeo 1:1 con la Tarea)
+- **Títulos de Sección (Heading 1):** Deben coincidir exactamente con el nombre de cada punto de la tarea (ej. *2. Corpus*, *3. Stopword (Palabra de parada / vacía)*, *4. Índice de Jaccard*...).
+- **Subtítulos de Sección (Heading 2):** Deben ser exactamente las preguntas literales planteadas por el docente (ej. *2.1 ¿Qué es un corpus en PLN?*, *2.2 ¿Por qué es fundamental en el análisis de texto?*). Esto facilita la revisión y asegura una calificación perfecta al mapear 1:1 contra la rúbrica.
+- **Ejemplos Cortos y Concretos:** No saturar con matrices gigantescas ni textos largos innecesarios. Los ejemplos deben ser breves (frases de 3 a 10 palabras con operaciones directas) solo cuando sea necesario ilustrar la idea básica.
+
+---
 El documento final debe organizarse de forma estricta con saltos de página formales en cada uno de estos puntos:
 
 1. **Hoja 1 ➔ Portada Oficial Completa:**  
