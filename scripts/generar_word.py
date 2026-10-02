@@ -76,6 +76,8 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
                 
                 # Sustituir fecha si aplica
                 xml_text = re.sub(r'Septiembre de 2026', fecha, xml_text)
+                # Reemplazo robusto para fechas divididas en múltiples nodos <w:t> en la portada
+                xml_text = re.sub(r'<w:t>Septiembre</w:t></w:r><w:r[^>]*>(?:<w:rPr>.*?</w:rPr>)?<w:t[^>]*>\s*de 2026</w:t>', f'<w:t>{fecha}</w:t>', xml_text)
                 
                 content = xml_text.encode("utf-8")
             zout.writestr(item, content)

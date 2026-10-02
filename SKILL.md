@@ -90,9 +90,26 @@ El profesor Morales suele explicar los temas proyectando su propia implementaci�
   - Las impresiones en pantalla deben ser texto plano sobrio, técnico y limpio, con formato estándar de laboratorio de ingeniería (ej. `[INFO] CANCION ACTUAL: 'Get Lucky'`, `=== TOP 5 RECOMENDACIONES ===`).
   - *Razón técnica:* En Windows (PowerShell/CMD) los emojis provocan errores de codificación (`UnicodeEncodeError: 'charmap'`) y, además, delatan inmediatamente ante el docente que el código fue redactado por una inteligencia artificial.
 
-### Reporte Word (.docx) (Solo si el docente lo solicita):
+### Reporte Word (.docx) (Prácticas e Investigaciones Teóricas):
 - Plantilla: `templates/Portada_Inteligencia_Artificial_Base.docx`.
 - Actualizar campos XML con título, fecha y nombre del estudiante configurado.
+
+### Protocolo de Investigaciones Teóricas en IA (Mtro. Morales):
+Para tareas de investigación teórica (como monografías de conceptos de PLN, heurísticas, etc.), consultar `prompts/PROMPT_INVESTIGACIONES_IA.md` y aplicar obligatoriamente:
+1. **Flujo Pedagógico Integrado de 4 Fases por Concepto:**
+   - *Fase 1 (Intuición y Analogía Cotidiana):* Analogía simple y directa de la vida real.
+   - *Fase 2 (Explicación Didáctica):* Definición clara de qué es y qué problema resuelve sin tecnicismos oscuros.
+   - *Fase 3 (Lógica Algorítmica / Matemática):* Fórmula formal y comportamiento computacional en código.
+   - *Fase 4 (Causa-Efecto y Ejemplo Real):* Qué pasa si no se usa y demostración numérica paso a paso.
+2. **Reglas de Redacción:** Voz en tercera persona impersonal, tono de estudiante de alto rendimiento de ISC, CERO asteriscos (`*`), sin cajas ni notas intrusivas con emojis.
+3. **Estructura de Saltos de Página:**
+   - Hoja 1: Portada oficial ITSP `[Salto de página]`
+   - Hoja 2: Contenido / Índice `[Salto de página]`
+   - Hoja 3: 1. Introducción `[Salto de página]`
+   - Hojas 4+: Desarrollo continuo con interlineado 1.5 `[Salto de página]`
+   - Hoja aparte: 5. Conclusiones `[Salto de página]`
+   - Hoja aparte: 6. Referencias (APA 7ª ed.).
+4. **Imágenes y Extensión:** Máximo 3 imágenes reales descargadas de internet con pie de figura formal; extensión total acotada entre 12 y 15 páginas (máximo 20).
 
 ---
 
