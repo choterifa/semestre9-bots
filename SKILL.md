@@ -27,15 +27,14 @@ Este asistente está diseñado para resolver, programar, formatear y documentar 
 
 ---
 
-## 🛑 0.1. Regla Estricta Universal: Eliminación de Hoja 2 del Template e Índice Nativo de Word
+## 🛑 0.1. Reglas Estrictas Universales para Reportes Word (.docx)
 
-Esta regla aplica **obligatoriamente y sin excepción** a TODOS los reportes e investigaciones en Word (`.docx`) de Semestre 9 (**Inteligencia Artificial**, **Informática Forense** y **Pentesting**):
+Estas reglas aplican **obligatoriamente y sin excepción** a TODOS los reportes e investigaciones en Word (`.docx`) de Semestre 9 (**Inteligencia Artificial**, **Informática Forense** y **Pentesting**):
 
-1. **Eliminación Obligatoria de la Hoja 2 del Template:**
-   - Al cargar cualquier plantilla base (`templates/Portada_*.docx`), se deben **eliminar de forma inmediata todos los párrafos posteriores a la portada** (`paragraphs[1:]`).
-   - Estos párrafos contienen un banner/encabezado repetido no deseado (*"Reporte de práctica / [Materia] / Ingeniería en Sistemas Computacionales"*).
-   - **Queda estrictamente prohibido** que esta hoja duplicada figure en el documento entregable final.
-2. **Hoja 2 Exclusiva para la Tabla de Contenidos (Índice):**
+1. **Eliminación Absoluta de la Hoja Duplicada del Template:**
+   - Las plantillas base en `templates/` han sido saneadas físicamente para no contener esta hoja repetida. Adicionalmente, el generador `scripts/generar_word.py` ejecuta siempre la purga programática `purgar_hoja_duplicada_template(doc)` eliminando cualquier párrafo residual (`paragraphs[1:]`).
+   - El encabezado repetido (*"Reporte de práctica / [Materia] / Ingeniería en Sistemas Computacionales"*) **queda estrictamente prohibido** en cualquier entrega final.
+2. **Hoja 2 Exclusiva para la Tabla de Contenidos (Índice Nativo):**
    - La Hoja 2 queda reservada **única y exclusivamente** para la Tabla de Contenidos nativa de Word.
    - Debe insertarse mediante el bloque SDT oficial (`w:sdt`) con la instrucción de campo `TOC \o "1-2" \h \z \u` y el título `Contenido` en azul institucional `#0F4761`.
    - Se delimita con un salto de página tras la portada (`add_page_break()`) y un salto de página hacia la Hoja 3 antes de iniciar el cuerpo del documento.
@@ -43,6 +42,11 @@ Esta regla aplica **obligatoriamente y sin excepción** a TODOS los reportes e i
    - En todo el documento, CADA título de primer nivel debe crearse estrictamente con el estilo nativo `Heading 1` (`Ttulo1`) y cada subtítulo con `Heading 2` (`Ttulo2`).
    - Usar siempre los métodos estandarizados del módulo `scripts/generar_word.py` (`agregar_encabezado_1` y `agregar_encabezado_2`).
    - **Prohibido** usar texto normal en negrita simulando encabezados, ya que Word no los reconoce dentro del índice automático.
+4. **Pregunta Obligatoria sobre Inclusión de Evidencias e Imágenes:**
+   - Al elaborar o planificar cualquier reporte o documento en Word para cualquier materia, el asistente **DEBE preguntar siempre** al estudiante:
+     > *"¿Deseas que incluya capturas de evidencia e imágenes en el reporte? (con su pie de figura breve, entendible y en cursiva)"*
+   - Si el estudiante confirma (o las instrucciones de la práctica lo exigen explícitamente), se generan o capturan las evidencias en la subcarpeta `Evidencias_Capturas/` y se insertan centradas con su respectivo pie de figura en cursiva (*Figura X: [Descripción breve y entendible]*).
+   - Si el estudiante indica que no desea imágenes, el reporte se estructura de forma puramente técnica y analítica con tablas y texto.
 
 ---
 
