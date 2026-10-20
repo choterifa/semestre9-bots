@@ -31,18 +31,24 @@ Este asistente está diseñado para resolver, programar, formatear y documentar 
 
 Estas reglas aplican **obligatoriamente y sin excepción** a TODOS los reportes e investigaciones en Word (`.docx`) de Semestre 9 (**Inteligencia Artificial**, **Informática Forense** y **Pentesting**):
 
-1. **Eliminación Absoluta de la Hoja Duplicada del Template:**
-   - Las plantillas base en `templates/` han sido saneadas físicamente para no contener esta hoja repetida. Adicionalmente, el generador `scripts/generar_word.py` ejecuta siempre la purga programática `purgar_hoja_duplicada_template(doc)` eliminando cualquier párrafo residual (`paragraphs[1:]`).
-   - El encabezado repetido (*"Reporte de práctica / [Materia] / Ingeniería en Sistemas Computacionales"*) **queda estrictamente prohibido** en cualquier entrega final.
-2. **Hoja 2 Exclusiva para la Tabla de Contenidos (Índice Nativo):**
+1. **Portada Oficial Completa en Hoja 1 e Inmunidad de Metadatos:**
+   - La Portada oficial del ITSP reside en los párrafos iniciales `P[0]` y `P[1]`.
+   - `P[0]` contiene los logotipos oficiales y el membrete del instituto.
+   - `P[1]` contiene la forma institucional con los metadatos completos: Carrera, Grado y Grupo, Materia, Nombre de la Tarea/Actividad, Fecha de Entrega, Nombre del Estudiante y Nombre del Docente, finalizando con el salto de página hacia la Hoja 2.
+   - **Queda estrictamente prohibido mutilar P[1]**: Solo se purgan programáticamente los párrafos residuales `P[2:]` (banners repetidos antiguos como *"Reporte de práctica / [Materia] / Ingeniería en Sistemas Computacionales"*).
+2. **Hoja 2 Exclusiva para la Tabla de Contenidos (Índice Nativo Precargado y Enlazado):**
    - La Hoja 2 queda reservada **única y exclusivamente** para la Tabla de Contenidos nativa de Word.
    - Debe insertarse mediante el bloque SDT oficial (`w:sdt`) con la instrucción de campo `TOC \o "1-2" \h \z \u` y el título `Contenido` en azul institucional `#0F4761`.
-   - Se delimita con un salto de página tras la portada (`add_page_break()`) y un salto de página hacia la Hoja 3 antes de iniciar el cuerpo del documento.
-3. **Enlace Obligatorio con Estilos Nativos Heading 1 y Heading 2:**
+   - **El índice NUNCA debe abrir en blanco**: Todas las secciones y subsecciones registradas se precargan con estilos `TDC1` y `TDC2`, tabuladores con puntos de relleno (`leader="dot"`), hipervínculos a los marcadores nativos (`_Toc...`) y sus números de página correspondientes.
+   - Si el usuario pulsa *"Actualizar tabla"* en Word, el documento se actualiza automáticamente al estar respaldado por la instrucción de campo nativa.
+3. **Salto de Página Obligatorio antes de cada Título de Nivel 1:**
+   - **Cada sección principal (Título de Nivel 1 / `Heading 1`), a partir de la Sección 2 en adelante, DEBE iniciar obligatoriamente con un salto de página** (`doc.add_page_break()`).
+   - Esto garantiza que cada sección o ejercicio comience al inicio de una nueva hoja limpia desde el principio, evitando que títulos queden al pie de página de secciones previas.
+4. **Enlace Obligatorio con Estilos Nativos Heading 1 y Heading 2:**
    - En todo el documento, CADA título de primer nivel debe crearse estrictamente con el estilo nativo `Heading 1` (`Ttulo1`) y cada subtítulo con `Heading 2` (`Ttulo2`).
    - Usar siempre los métodos estandarizados del módulo `scripts/generar_word.py` (`agregar_encabezado_1` y `agregar_encabezado_2`).
    - **Prohibido** usar texto normal en negrita simulando encabezados, ya que Word no los reconoce dentro del índice automático.
-4. **Regla Universal de Capturas Nativas Reales (CERO Imágenes Sintéticas):**
+5. **Regla Universal de Capturas Nativas Reales (CERO Imágenes Sintéticas):**
    - **PROHIBIDO TERMINANTEMENTE EL USO DE IMÁGENES GENERADAS O SINTÉTICAS CON PIL:**
      Queda estrictamente prohibido simular consolas, ventanas o tarjetas sintéticas con librerías de dibujo gráfico. Las evidencias deben ser **100% auténticas, reales y verificables**.
    - **Capturas Reales de las Herramientas y Aplicaciones:**
@@ -54,7 +60,6 @@ Estas reglas aplican **obligatoriamente y sin excepción** a TODOS los reportes 
      Antes de compilar cualquier reporte en Word (.docx) para cualquier materia (Inteligencia Artificial, Informática Forense o Pentesting), el asistente **DEBE preguntar siempre**:
      > *"¿Deseas que incluya capturas de evidencia e imágenes en el reporte? (con su pie de figura breve, entendible y en cursiva)"*
      Si el alumno confirma (o la práctica lo exige expresamente), se toman las capturas reales en `Evidencias_Capturas/` y se integran en el documento. Si indica que no, se compila un reporte puramente técnico con tablas y texto.
-
 ---
 
 ## 1. Protocolo de Inicio: Detección de Materia y Perfil del Estudiante
