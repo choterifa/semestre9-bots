@@ -42,11 +42,18 @@ Estas reglas aplican **obligatoriamente y sin excepción** a TODOS los reportes 
    - En todo el documento, CADA título de primer nivel debe crearse estrictamente con el estilo nativo `Heading 1` (`Ttulo1`) y cada subtítulo con `Heading 2` (`Ttulo2`).
    - Usar siempre los métodos estandarizados del módulo `scripts/generar_word.py` (`agregar_encabezado_1` y `agregar_encabezado_2`).
    - **Prohibido** usar texto normal en negrita simulando encabezados, ya que Word no los reconoce dentro del índice automático.
-4. **Pregunta Obligatoria sobre Inclusión de Evidencias e Imágenes:**
-   - Al elaborar o planificar cualquier reporte o documento en Word para cualquier materia, el asistente **DEBE preguntar siempre** al estudiante:
+4. **Regla Universal de Capturas Nativas Reales (CERO Imágenes Sintéticas):**
+   - **PROHIBIDO TERMINANTEMENTE EL USO DE IMÁGENES GENERADAS O SINTÉTICAS CON PIL:**
+     Queda estrictamente prohibido simular consolas, ventanas o tarjetas sintéticas con librerías de dibujo gráfico. Las evidencias deben ser **100% auténticas, reales y verificables**.
+   - **Capturas Reales de las Herramientas y Aplicaciones:**
+     * **Pestañas de Aplicaciones y Navegadores:** Si la herramienta cuenta con interfaz gráfica, web UI o pestañas de aplicación (ej. SpiderFoot Web UI, Moodle, Wayback Machine, Google Chrome, Burp Suite, Wireshark, etc.), se capturan de forma nativa directamente desde el navegador o ventana real (mediante Chrome/Edge o capturas nativas de ventana).
+     * **Consola y Terminal:** Si la herramienta opera por línea de comandos (PowerShell, CMD, terminal bash, scripts Python, Nmap, Rizin, HashMyFiles, etc.), se captura la ejecución real en la consola del sistema mostrando los comandos ejecutados con el prompt del alumno (`PS C:\Users\<Usuario>\...`).
+   - **Pie de Figura Breve, Entendible y en Cursiva:**
+     Cada captura se inserta centrada con ancho uniforme (5.5 a 5.8 pulgadas), acompañada obligatoriamente de su pie de figura en cursiva y fuente de 9 pt (*Figura X: [Descripción técnica breve y entendible]*).
+   - **Pregunta Obligatoria de Inclusión al Estudiante:**
+     Antes de compilar cualquier reporte en Word (.docx) para cualquier materia (Inteligencia Artificial, Informática Forense o Pentesting), el asistente **DEBE preguntar siempre**:
      > *"¿Deseas que incluya capturas de evidencia e imágenes en el reporte? (con su pie de figura breve, entendible y en cursiva)"*
-   - Si el estudiante confirma (o las instrucciones de la práctica lo exigen explícitamente), se generan o capturan las evidencias en la subcarpeta `Evidencias_Capturas/` y se insertan centradas con su respectivo pie de figura en cursiva (*Figura X: [Descripción breve y entendible]*).
-   - Si el estudiante indica que no desea imágenes, el reporte se estructura de forma puramente técnica y analítica con tablas y texto.
+     Si el alumno confirma (o la práctica lo exige expresamente), se toman las capturas reales en `Evidencias_Capturas/` y se integran en el documento. Si indica que no, se compila un reporte puramente técnico con tablas y texto.
 
 ---
 
