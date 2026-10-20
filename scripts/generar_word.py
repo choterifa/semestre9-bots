@@ -2,6 +2,8 @@
 """
 Módulo automatizado para generar documentos Word (.docx) institucionales
 conservando portada, membrete oficial (header2/footer2) y estilos nativos del ITSP.
+Regla obligatoria: Elimina la segunda hoja duplicada del template e integra
+el índice nativo de Word enlazado con Heading 1 (Ttulo1) y Heading 2 (Ttulo2).
 """
 import json
 import os
@@ -9,34 +11,41 @@ import sys
 import zipfile
 import re
 from datetime import datetime
+import docx
+from docx.shared import Pt, RGBColor, Inches
+from docx.oxml import parse_xml
+from docx.oxml.ns import nsdecls
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_PATH = os.path.join(BASE_DIR, "config.json")
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
+AZUL_INSTITUCIONAL = RGBColor(15, 71, 97) # #0F4761
+GRIS_TEXTO = RGBColor(34, 34, 34)
+
 def cargar_config():
     if os.path.exists(CONFIG_PATH):
-        with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+        with open(CONFIG_PATH, "r", encoding="utf-8-sig") as f:
             return json.load(f)
     return {
         "estudiante": {
-            "nombre_completo": "ESTUDIANTE ITSP",
-            "matricula": "04220000",
+            "nombre_completo": "Carlos Eduardo Valencia Hernández",
+            "matricula": "04220057",
             "grado_grupo": "9° - Grupo 1",
             "carrera": "INGENIERIA EN SISTEMAS COMPUTACIONALES"
         }
     }
 
 def obtener_plantilla(materia="ia"):
-    if materia.lower() in ["ia", "inteligencia artificial"]:
+    m = materia.lower()
+    if m in ["ia", "inteligencia artificial"]:
         return os.path.join(TEMPLATES_DIR, "Portada_Inteligencia_Artificial_Base.docx")
-    elif materia.lower() in ["forense", "informatica forense", "informática forense"]:
+    elif m in ["forense", "informatica forense", "informática forense"]:
         return os.path.join(TEMPLATES_DIR, "Portada_Informatica_Forense_Base.docx")
-    elif materia.lower() in ["pentesting", "holzen", "olsen"]:
+    elif m in ["pentesting", "holzen", "olsen"]:
         return os.path.join(TEMPLATES_DIR, "Portada_Pentesting_Base.docx")
     else:
-        # Por defecto IA
-        return os.path.join(TEMPLATES_DIR, "Portada_Inteligencia_Artificial_Base.docx")
+        return os.path.join(TEMPLATES_DIR, "Portada_Pentesting_Base.docx")
 
 def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
     """
@@ -46,7 +55,7 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
     """
     config = cargar_config()
     estudiante = config["estudiante"]["nombre_completo"]
-    matricula = config["estudiante"].get("matricula", "04220000")
+    matricula = config["estudiante"].get("matricula", "04220057")
     
     if not fecha:
         meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", 
@@ -58,7 +67,6 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
     if not os.path.exists(plantilla_path):
         raise FileNotFoundError(f"No se encontró la plantilla en {plantilla_path}")
 
-    # Reemplazo limpio a nivel XML para no alterar gráficos ni relaciones
     os.makedirs(os.path.dirname(os.path.abspath(ruta_salida)), exist_ok=True)
     
     with zipfile.ZipFile(plantilla_path, 'r') as zin, zipfile.ZipFile(ruta_salida, 'w') as zout:
@@ -70,13 +78,12 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
                 # Sustituir título de la tarea
                 xml_text = re.sub(r'\[Nombre de la Tarea / Actividad\]', titulo_tarea, xml_text)
                 
-                # Sustituir estudiante si estaba Carlos o genérico
+                # Sustituir estudiante
                 xml_text = re.sub(r'Carlos Eduardo Valencia Hernández', estudiante, xml_text)
                 xml_text = re.sub(r'ESTUDIANTE ITSP', estudiante, xml_text)
                 
-                # Sustituir fecha si aplica
+                # Sustituir fecha
                 xml_text = re.sub(r'Septiembre de 2026', fecha, xml_text)
-                # Reemplazo robusto para fechas divididas en múltiples nodos <w:t> en la portada
                 xml_text = re.sub(r'<w:t>Septiembre</w:t></w:r><w:r[^>]*>(?:<w:rPr>.*?</w:rPr>)?<w:t[^>]*>\s*de 2026</w:t>', f'<w:t>{fecha}</w:t>', xml_text)
                 
                 content = xml_text.encode("utf-8")
@@ -87,23 +94,29 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
                 content = xml_settings.encode("utf-8")
             zout.writestr(item, content)
 
-    print(f"✅ Documento base institucional generado en: {ruta_salida}")
-    print(f"   👤 Estudiante: {estudiante} ({matricula})")
-    print(f"   📋 Tarea: {titulo_tarea}")
-    print(f"   📅 Fecha: {fecha}")
+    print(f"[OK] Documento base institucional generado en: {ruta_salida}")
+    print(f"   [INFO] Estudiante: {estudiante} ({matricula})")
+    print(f"   [INFO] Tarea: {titulo_tarea}")
+    print(f"   [INFO] Fecha: {fecha}")
     return ruta_salida
+
+def purgar_hoja_duplicada_template(doc):
+    """
+    REGLA ESTRICTA UNIVERSAL DE SEMESTRE 9:
+    Elimina permanentemente los párrafos sobrantes de la plantilla base (P[1:])
+    que contienen el encabezado repetido:
+    'Reporte de práctica / [Materia] / Ingeniería en Sistemas Computacionales...'
+    Garantiza que NUNCA aparezca esa segunda hoja vacía o repetida.
+    """
+    parrafos_sobrantes = [p for p in doc.paragraphs[1:]]
+    for p in parrafos_sobrantes:
+        p._p.getparent().remove(p._p)
 
 def insertar_tabla_contenido_nativa(doc):
     """
     Inserta la Tabla de Contenidos nativa de Microsoft Word (Referencias -> Tabla de contenido)
-    en la Hoja 2 del documento.
-    Elimina cualquier banner repetido o texto previo de la portada en Hoja 2,
-    dejando únicamente el encabezado 'Contenido' y el bloque SDT nativo de Word
-    enlazado a los estilos Heading 1, Heading 2 y Heading 3.
+    en la Hoja 2 del documento, vinculada formalmente a Heading 1 (Ttulo1) y Heading 2 (Ttulo2).
     """
-    from docx.oxml import parse_xml
-    from docx.oxml.ns import nsdecls
-
     sdt_xml = (
         f'<w:sdt {nsdecls("w")}>\n'
         f'  <w:sdtPr>\n'
@@ -139,7 +152,7 @@ def insertar_tabla_contenido_nativa(doc):
         f'        <w:fldChar w:fldCharType="begin"/>\n'
         f'      </w:r>\n'
         f'      <w:r>\n'
-        f'        <w:instrText xml:space="preserve"> TOC \\o "1-3" \\h \\z \\u </w:instrText>\n'
+        f'        <w:instrText xml:space="preserve"> TOC \\o "1-2" \\h \\z \\u </w:instrText>\n'
         f'      </w:r>\n'
         f'      <w:r>\n'
         f'        <w:fldChar w:fldCharType="separate"/>\n'
@@ -152,24 +165,70 @@ def insertar_tabla_contenido_nativa(doc):
         f'</w:sdt>'
     )
     sdt = parse_xml(sdt_xml)
-    if len(doc.paragraphs) > 2:
-        doc.paragraphs[2]._p.addprevious(sdt)
-        for p in list(doc.paragraphs[2:5]):
-            if p._p.getparent() is not None:
-                p._p.getparent().remove(p._p)
-        for p in list(doc.paragraphs[2:]):
-            if p.text == '' and len(p._p.findall('.//{http://schemas.openxmlformats.org/wordprocessingml/2006/main}br')) == 0:
-                if p._p.getparent() is not None:
-                    p._p.getparent().remove(p._p)
-    else:
-        doc._body._body.append(sdt)
+    doc._body._body.append(sdt)
+
+def iniciar_documento_institucional(materia, titulo_tarea, ruta_salida, fecha=None):
+    """
+    Función maestra: Inicializa el documento, purga la hoja duplicada del template,
+    crea el salto a la Hoja 2, inyecta la Tabla de Contenidos nativa y añade
+    el salto de página a la Hoja 3 para iniciar el desarrollo del trabajo.
+    Retorna el objeto Document de python-docx listo para redactar.
+    """
+    preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha)
+    doc = docx.Document(ruta_salida)
+    
+    # 1. Purgar párrafos no deseados de la segunda hoja del template
+    purgar_hoja_duplicada_template(doc)
+    
+    # 2. Salto de página tras la portada hacia la Hoja 2
+    p_br1 = doc.add_paragraph()
+    p_br1.paragraph_format.space_before = Pt(0)
+    p_br1.paragraph_format.space_after = Pt(0)
+    p_br1.add_run().add_break(docx.enum.text.WD_BREAK.PAGE)
+    
+    # 3. Insertar Índice Nativo de Word en la Hoja 2
+    insertar_tabla_contenido_nativa(doc)
+    
+    # 4. Salto de página tras el índice hacia la Hoja 3 (Desarrollo)
+    p_br2 = doc.add_paragraph()
+    p_br2.paragraph_format.space_before = Pt(0)
+    p_br2.paragraph_format.space_after = Pt(0)
+    p_br2.add_run().add_break(docx.enum.text.WD_BREAK.PAGE)
+    
+    return doc
+
+def agregar_encabezado_1(doc, texto):
+    """Agrega un Título de Nivel 1 con el estilo nativo Heading 1 (Ttulo1) enlazado al índice."""
+    p = doc.add_paragraph(style='Heading 1')
+    p.paragraph_format.space_before = Pt(18)
+    p.paragraph_format.space_after = Pt(8)
+    p.paragraph_format.keep_with_next = True
+    r = p.add_run(texto)
+    r.font.name = "Calibri"
+    r.font.size = Pt(17)
+    r.font.bold = True
+    r.font.color.rgb = AZUL_INSTITUCIONAL
+    return p
+
+def agregar_encabezado_2(doc, texto):
+    """Agrega un Subtítulo de Nivel 2 con el estilo nativo Heading 2 (Ttulo2) enlazado al índice."""
+    p = doc.add_paragraph(style='Heading 2')
+    p.paragraph_format.space_before = Pt(14)
+    p.paragraph_format.space_after = Pt(6)
+    p.paragraph_format.keep_with_next = True
+    r = p.add_run(texto)
+    r.font.name = "Calibri"
+    r.font.size = Pt(13)
+    r.font.bold = True
+    r.font.color.rgb = AZUL_INSTITUCIONAL
+    return p
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Uso: python3 generar_word.py <materia: ia|forense> <titulo_tarea> [ruta_salida]")
+        print("Uso: python3 generar_word.py <materia: ia|forense|pentesting> <titulo_tarea> [ruta_salida]")
         sys.exit(1)
         
     materia = sys.argv[1]
     titulo = sys.argv[2]
     salida = sys.argv[3] if len(sys.argv) > 3 else os.path.expanduser(f"~/Downloads/{titulo.replace(' ', '_')}.docx")
-    preparar_documento_base(materia, titulo, salida)
+    iniciar_documento_institucional(materia, titulo, salida)

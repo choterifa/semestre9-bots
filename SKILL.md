@@ -27,6 +27,25 @@ Este asistente está diseñado para resolver, programar, formatear y documentar 
 
 ---
 
+## 🛑 0.1. Regla Estricta Universal: Eliminación de Hoja 2 del Template e Índice Nativo de Word
+
+Esta regla aplica **obligatoriamente y sin excepción** a TODOS los reportes e investigaciones en Word (`.docx`) de Semestre 9 (**Inteligencia Artificial**, **Informática Forense** y **Pentesting**):
+
+1. **Eliminación Obligatoria de la Hoja 2 del Template:**
+   - Al cargar cualquier plantilla base (`templates/Portada_*.docx`), se deben **eliminar de forma inmediata todos los párrafos posteriores a la portada** (`paragraphs[1:]`).
+   - Estos párrafos contienen un banner/encabezado repetido no deseado (*"Reporte de práctica / [Materia] / Ingeniería en Sistemas Computacionales"*).
+   - **Queda estrictamente prohibido** que esta hoja duplicada figure en el documento entregable final.
+2. **Hoja 2 Exclusiva para la Tabla de Contenidos (Índice):**
+   - La Hoja 2 queda reservada **única y exclusivamente** para la Tabla de Contenidos nativa de Word.
+   - Debe insertarse mediante el bloque SDT oficial (`w:sdt`) con la instrucción de campo `TOC \o "1-2" \h \z \u` y el título `Contenido` en azul institucional `#0F4761`.
+   - Se delimita con un salto de página tras la portada (`add_page_break()`) y un salto de página hacia la Hoja 3 antes de iniciar el cuerpo del documento.
+3. **Enlace Obligatorio con Estilos Nativos Heading 1 y Heading 2:**
+   - En todo el documento, CADA título de primer nivel debe crearse estrictamente con el estilo nativo `Heading 1` (`Ttulo1`) y cada subtítulo con `Heading 2` (`Ttulo2`).
+   - Usar siempre los métodos estandarizados del módulo `scripts/generar_word.py` (`agregar_encabezado_1` y `agregar_encabezado_2`).
+   - **Prohibido** usar texto normal en negrita simulando encabezados, ya que Word no los reconoce dentro del índice automático.
+
+---
+
 ## 1. Protocolo de Inicio: Detección de Materia y Perfil del Estudiante
 
 En cada interacción inicial o nueva tarea, el asistente debe ejecutar este flujo:

@@ -15,7 +15,7 @@ def registrar_skill(destino_dir, nombre_asistente):
     try:
         os.makedirs(destino_dir, exist_ok=True)
         shutil.copy2(SKILL_SRC, os.path.join(destino_dir, "SKILL.md"))
-        print(f"   [✓] Instalado en {nombre_asistente}: {destino_dir}")
+        print(f"   [OK] Instalado en {nombre_asistente}: {destino_dir}")
         return True
     except Exception as e:
         print(f"   [!] No se pudo registrar en {nombre_asistente}: {e}")
@@ -23,7 +23,7 @@ def registrar_skill(destino_dir, nombre_asistente):
 
 def main():
     print("=" * 70)
-    print("🚀 INSTALADOR AUTOMÁTICO DE SEMESTRE9-BOTS (ITSP)")
+    print("INSTALADOR AUTOMÁTICO DE SEMESTRE9-BOTS (ITSP)")
     print("=" * 70)
 
     # 1. Configuración de perfil
@@ -31,9 +31,9 @@ def main():
         from scripts.configurar_perfil import solicitar_datos
         solicitar_datos()
     else:
-        print("ℹ️  Perfil de estudiante encontrado en config.json.")
+        print("[INFO] Perfil de estudiante encontrado en config.json.")
 
-    print("\n📦 Registrando Skill en tus asistentes de Inteligencia Artificial...")
+    print("\n[PAQUETE] Registrando Skill en tus asistentes de Inteligencia Artificial...")
 
     home = os.path.expanduser("~")
     destinos = [
@@ -49,7 +49,7 @@ def main():
             instalados += 1
 
     print("\n" + "=" * 70)
-    print("🎉 ¡INSTALACIÓN COMPLETADA CON ÉXITO!")
+    print("¡INSTALACIÓN COMPLETADA CON ÉXITO!")
     print("=" * 70)
     print("¿Cómo usar Semestre9-Bots con tus tareas?")
     print("1. Abre tu asistente favorito (Gemini, Claude Code o Cursor).")
