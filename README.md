@@ -15,11 +15,13 @@
 | **Informática Forense** | Mtro. Edgar Alejandro Sagundo Duarte | Reporte Técnico Oficial en Word (`.docx`) | Estilos nativos (`Heading 1` / `Heading 2` en Aptos Display 20pt/16pt `#0F4761`), tablas sin color, capturas reales de terminal y conclusión en 1ª persona. |
 | **Pentesting** | Docente: Martínez García Holzen | Investigaciones Académicas (APA 7ª) o Reportes de Labs | Búsquedas de papers/estándares (OWASP/MITRE/NIST), citas en texto, 3-5 referencias en español, tablas de remediación y Word oficial. |
 
+| **Tutorías** | Portada basada en Pentesting; confirmar docente del grupo | PDF único: portada + plan rellenado + resultados | `<título Moodle>_Carlos Eduardo Valencia.pdf` para Carlos; sin notas internas ni evidencias inventadas. |
+
 ---
 
 ## 🚀 Instalación Rápida (1 solo paso)
 
-Clona este repositorio privado e inicia el instalador interactivo:
+Clona este repositorio e inicia el instalador interactivo:
 
 ```bash
 git clone https://github.com/choterifa/semestre9-bots.git
@@ -66,7 +68,9 @@ semestre9-bots/
 ├── README.md                              # Guía de uso completa
 ├── templates/
 │   ├── Portada_Inteligencia_Artificial_Base.docx  # Plantilla oficial ITSP (Materia IA)
-│   └── Portada_Informatica_Forense_Base.docx      # Plantilla oficial ITSP (Materia Forense)
+│   ├── Portada_Informatica_Forense_Base.docx      # Plantilla oficial ITSP (Materia Forense)
+│   ├── Portada_Pentesting_Base.docx              # Plantilla oficial ITSP (Pentesting)
+│   └── Portada_Tutorias_Base.docx                # Portada única para Tutorías
 ├── scripts/
 │   └── configurar_perfil.py               # Asistente de configuración de perfil
 └── examples/
@@ -92,4 +96,27 @@ O edita directamente el archivo `config.json`.
 
 ## 🔒 Privacidad y Autoría
 
-Este repositorio es privado. Todos los scripts y archivos generados permanecen de forma **100% local** en tu computadora. Nada se sincroniza ni sube a servicios externos sin tu confirmación explícita.
+Este repositorio es público; no subas datos personales ni credenciales. Todos los scripts y archivos generados permanecen de forma **100% local** en tu computadora. Nada se sincroniza ni sube a servicios externos sin tu confirmación explícita.
+
+## Tutorías: configuración y entrega
+
+Tutorías aparece como cuarta opción en la Skill y se registra en los perfiles nuevos.
+Al volver a ejecutar `python3 install.py`, también se agrega a perfiles existentes sin sobrescribir los datos guardados.
+
+1. Descarga el plan de sesión de Moodle y rellena los apartados pedidos, manteniendo las instrucciones del docente.
+2. Añade solo evidencias reales de resultados: tablas, respuestas, comparaciones o reflexión. No inventes asistencia, fotos, videos ni enlaces.
+3. Exporta el plan rellenado a PDF.
+4. Genera la entrega con la portada base al principio:
+
+```bash
+python3 -m pip install -r requirements-tutorias.txt
+# También se requiere LibreOffice (comando soffice).
+python3 scripts/generar_tutorias.py --plan-pdf plan_rellenado.pdf --titulo 'Título exacto Moodle' --fecha '21 de octubre de 2026' --nombre-entrega 'Carlos Eduardo Valencia'
+```
+
+El comando no rellena el plan automáticamente ni sube nada a Moodle. Une la portada y el PDF ya rellenado en un único archivo. Usa los datos de `config.json`, que permanece local e ignorado por Git.
+Para el nombre abreviado habitual, guarda `estudiante.nombre_entrega` en tu configuración local; no altera el nombre completo de la portada.
+No entrega DOCX ni añade notas sobre el asistente o la preparación del documento. El PDF final debe revisarse visualmente antes de subirlo con autorización.
+Si el plan pide video y la instrucción de clase parece distinta, confirma el requisito; no borres la consigna ni reemplaces el video con contenido ajeno.
+
+Archivos nuevos: `templates/Portada_Tutorias_Base.docx`, `scripts/generar_tutorias.py`, `requirements-tutorias.txt` y `tests/test_tutorias.py`.
