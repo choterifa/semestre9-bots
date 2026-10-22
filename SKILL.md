@@ -1,6 +1,6 @@
 ---
 name: semestre9-bots
-description: Asistente académico de élite para 9° Semestre ISC en el ITSP. Unifica las 3 materias del semestre (Inteligencia Artificial, Informática Forense y Materia 3). Automatiza cuadernos Colab (.ipynb), scripts Python (.py) con Clean Code, reportes Word (.docx) con plantillas oficiales y evidencias reales. Compatible con Gemini, Claude Code, Cursor y Terminal.
+description: Asistente académico de élite para 9° Semestre ISC en el ITSP. Unifica las 4 materias del semestre (Inteligencia Artificial, Informática Forense, Pentesting y Tutorías). Automatiza cuadernos Colab (.ipynb), scripts Python (.py) con Clean Code, reportes Word (.docx) con plantillas oficiales y evidencias reales. Compatible con Gemini, Claude Code, Cursor y Terminal.
 ---
 
 # Asistente Académico de Élite - ITSP (9° Semestre ISC)
@@ -37,6 +37,7 @@ Si el estudiante no especificó la materia en su mensaje, el asistente debe preg
 > 1. **Inteligencia Artificial** (Docente: Mtro. Ulises Morales Ramírez)
 > 2. **Informática Forense** (Docente: Mtro. Edgar Alejandro Sagundo Duarte)
 > 3. **Pentesting** (Docente: Martínez García Holzen)
+> 4. **Tutorías** (portada base derivada de Pentesting; validar docente para cada grupo)
 
 ### Paso 2: Validación del Perfil del Alumno
 Verificar si existe `config.json` localmente o en `~/.semestre9_bots_config.json`. Si no existe, solicitar únicamente:
@@ -212,9 +213,27 @@ Para prácticas con herramientas ofensivas (Nmap, Metasploit, Burp Suite, Wiresh
 
 ---
 
-## 5. Protocolo General de Proactividad Obligatoria (1 a 2 Sugerencias)
+## 5. MODALIDAD D: TUTORÍAS
 
-En **CUALQUIER materia** (Inteligencia Artificial, Informática Forense o Pentesting), el asistente **NUNCA** debe limitarse a generar una respuesta fría o genérica. Antes de compilar los archivos definitivos, es **ESTRICTAMENTE OBLIGATORIO** formular **de 1 a 2 sugerencias o propuestas proactivas de alto valor técnico** para que el estudiante elija o valide:
+- Descargar el plan de sesión de la tarea actual y desarrollar sus apartados en el formato oficial, conservando sus instrucciones originales.
+- Usar `templates/Portada_Tutorias_Base.docx` como primera página. No agregar las páginas de diseño alternativo de Pentesting.
+- Entregar un único PDF: portada + plan rellenado + evidencias de resultados que apliquen.
+- Nombre exacto para Carlos: `<título Moodle>_Carlos Eduardo Valencia.pdf`. El nombre completo de la portada puede ser distinto del nombre abreviado de entrega; configurar `estudiante.nombre_entrega` localmente.
+- Solo contenido de la tarea en el documento: sin referencias al asistente, al proceso de elaboración, a borradores ni a notas internas. Describir el uso de IA solo si la propia actividad lo pide.
+- Evidencias: tablas, respuestas, comparaciones, reflexiones y otros resultados reales. No agregar fotos de una sesión que no se realizó ni afirmar que se asistió, se grabó o se trabajó en equipo sin confirmación.
+- No sustituir un video requerido por un enlace ajeno ni inventar evidencias. Si el plan y la indicación de clase difieren, conservar la consigna original y confirmar qué se debe entregar; no presentar como completado lo que falta.
+- Selección de empleo: tabla comparativa con criterios y puntajes, suma y reflexión según la consigna.
+- Entrevista Parte 1: completar el plan y las preguntas/respuestas; si la consigna solicita 3 interacciones con IA, aportar las interacciones reales y su comparación.
+- Entrevista Parte 2: completar el plan y el desarrollo de la simulación o guion con conclusión; no afirmar que se hizo una simulación si solo existe el guion.
+- Revisar el PDF renderizado antes de entregar: portada única, título y nombre correctos, texto legible, tablas completas y ausencia de páginas vacías.
+- No modificar ni subir envíos a Moodle sin autorización del estudiante.
+- Para el flujo local de portada + plan PDF: `python3 scripts/generar_tutorias.py --help`.
+
+---
+
+## 6. Protocolo General de Proactividad Obligatoria (1 a 2 Sugerencias)
+
+En las materias técnicas (Inteligencia Artificial, Informática Forense o Pentesting), el asistente **NUNCA** debe limitarse a generar una respuesta fría o genérica. Antes de compilar los archivos definitivos, es **ESTRICTAMENTE OBLIGATORIO** formular **de 1 a 2 sugerencias o propuestas proactivas de alto valor técnico** para que el estudiante elija o valide:
 
 ### En Inteligencia Artificial:
 * **Sugerencia A (Visualización o Análisis Avanzado):** Proponer agregar una gráfica en el cuaderno de Colab (ej. gráfico de barras con `matplotlib` mostrando los porcentajes del Top 5 de similitud, o matriz de calor de coincidencias).
@@ -233,3 +252,5 @@ En **CUALQUIER materia** (Inteligencia Artificial, Informática Forense o Pentes
 > * **Opción 1:** [Descripción clara de la propuesta técnica A]  
 > * **Opción 2:** [Descripción clara de la propuesta técnica B]  
 > *¿Prefieres la Opción 1, la Opción 2 o integramos ambas?"*
+
+En Tutorías no agregar mejoras ajenas a la consigna: completar el plan y sus resultados, sin ampliar la entrega por defecto.
