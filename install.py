@@ -33,6 +33,10 @@ def main():
     else:
         print("ℹ️  Perfil de estudiante encontrado en config.json.")
 
+    from scripts.configurar_perfil import actualizar_materias_existentes
+    actualizar_materias_existentes()
+
+    print("Materias disponibles: Inteligencia Artificial, Informática Forense, Pentesting y Tutorías.")
     print("\n📦 Registrando Skill en tus asistentes de Inteligencia Artificial...")
 
     home = os.path.expanduser("~")
@@ -56,7 +60,7 @@ def main():
     print("2. Escribe tu petición pegando las instrucciones de la tarea:")
     print("   Ejemplo: 'Resuelve esta tarea para Inteligencia Artificial: [instrucciones]'")
     print("   El bot detectará la materia, aplicará el formato del docente y creará")
-    print("   automáticamente tu carpeta con el cuaderno de Colab (.ipynb) y script (.py).\n")
+    print("   los entregables de la materia; Tutorías entrega un PDF único con portada y plan.\n")
 
 if __name__ == "__main__":
     main()
