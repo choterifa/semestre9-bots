@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Asistente interactivo de configuración de perfil para el estudiante.
-Configura nombre, matrícula, directorio de tareas y preferencias de las 3 materias.
+Configura nombre, matrícula, directorio de tareas y preferencias de las 4 materias.
 """
 import json
 import os
@@ -50,6 +50,7 @@ def solicitar_datos():
     config_data = {
         "estudiante": {
             "nombre_completo": nombre,
+            "nombre_entrega": nombre,
             "matricula": matricula,
             "grado_grupo": grupo,
             "carrera": carrera
@@ -64,6 +65,13 @@ def solicitar_datos():
                 "nombre": "INFORMÁTICA FORENSE",
                 "docente": "EDGAR ALEJANDRO SAGUNDO DUARTE",
                 "plantilla": os.path.join(BASE_DIR, "templates", "Portada_Informatica_Forense_Base.docx")
+            },
+            "tutorias": {
+                "nombre": "TUTORÍAS",
+                "docente": "MARTÍNEZ GARCÍA HOLZEN",
+                "plantilla": os.path.join(BASE_DIR, "templates", "Portada_Tutorias_Base.docx"),
+                "formato_entrega": "pdf",
+                "patron_archivo": "<título Moodle>_<nombre de entrega>.pdf"
             },
             "pentesting": {
                 "nombre": "PENTESTING",
@@ -91,6 +99,27 @@ def solicitar_datos():
     print(f"📁 Directorio de tareas: {ruta_salida}")
     print("=" * 70 + "\n")
     return config_data
+
+
+def actualizar_materias_existentes():
+    """Agrega materias nuevas sin pedir de nuevo ni sobrescribir el perfil."""
+    with open(os.path.join(BASE_DIR, "config.example.json"), encoding="utf-8") as f:
+        ejemplo = json.load(f)
+    for ruta in (CONFIG_PATH, GLOBAL_CONFIG_PATH):
+        if not os.path.exists(ruta):
+            continue
+        with open(ruta, encoding="utf-8") as f:
+            config = json.load(f)
+        materias = config.setdefault("materias", {})
+        for clave, datos in ejemplo["materias"].items():
+            if clave not in materias:
+                materias[clave] = dict(datos)
+                materias[clave]["plantilla"] = os.path.join(BASE_DIR, datos["plantilla"])
+        estudiante = config.setdefault("estudiante", {})
+        estudiante.setdefault("nombre_entrega", estudiante.get("nombre_completo", ""))
+        with open(ruta, "w", encoding="utf-8") as f:
+            json.dump(config, f, ensure_ascii=False, indent=2)
+
 
 if __name__ == "__main__":
     solicitar_datos()
