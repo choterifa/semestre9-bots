@@ -34,6 +34,8 @@ def obtener_plantilla(materia="ia"):
         return os.path.join(TEMPLATES_DIR, "Portada_Informatica_Forense_Base.docx")
     elif materia.lower() in ["pentesting", "holzen", "olsen"]:
         return os.path.join(TEMPLATES_DIR, "Portada_Pentesting_Base.docx")
+    elif materia.lower() in ["tutorias", "tutorías", "tutoria", "tutoría"]:
+        return os.path.join(TEMPLATES_DIR, "Portada_Tutorias_Base.docx")
     else:
         # Por defecto IA
         return os.path.join(TEMPLATES_DIR, "Portada_Inteligencia_Artificial_Base.docx")
@@ -54,6 +56,10 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
         now = datetime.now()
         fecha = f"{now.day} de {meses[now.month - 1]} de {now.year}"
 
+    from xml.sax.saxutils import escape
+    titulo_tarea = escape(titulo_tarea)
+    estudiante = escape(estudiante)
+    fecha = escape(fecha)
     plantilla_path = obtener_plantilla(materia)
     if not os.path.exists(plantilla_path):
         raise FileNotFoundError(f"No se encontró la plantilla en {plantilla_path}")
@@ -67,8 +73,10 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
             if item.filename == "word/document.xml":
                 xml_text = content.decode("utf-8")
                 
+                xml_text = xml_text.replace("[Fecha de entrega]", fecha)
+                xml_text = xml_text.replace("[Nombre del estudiante]", estudiante)
                 # Sustituir título de la tarea
-                xml_text = re.sub(r'\[Nombre de la Tarea / Actividad\]', titulo_tarea, xml_text)
+                xml_text = xml_text.replace('[Nombre de la Tarea / Actividad]', titulo_tarea)
                 
                 # Sustituir estudiante si estaba Carlos o genérico
                 xml_text = re.sub(r'Carlos Eduardo Valencia Hernández', estudiante, xml_text)
@@ -166,7 +174,7 @@ def insertar_tabla_contenido_nativa(doc):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Uso: python3 generar_word.py <materia: ia|forense> <titulo_tarea> [ruta_salida]")
+        print("Uso: python3 generar_word.py <materia: ia|forense|pentesting|tutorias> <titulo_tarea> [ruta_salida]")
         sys.exit(1)
         
     materia = sys.argv[1]
