@@ -60,6 +60,12 @@ Estas reglas aplican **obligatoriamente y sin excepción** a TODOS los reportes 
      Antes de compilar cualquier reporte en Word (.docx) para cualquier materia (Inteligencia Artificial, Informática Forense o Pentesting), el asistente **DEBE preguntar siempre**:
      > *"¿Deseas que incluya capturas de evidencia e imágenes en el reporte? (con su pie de figura breve, entendible y en cursiva)"*
      Si el alumno confirma (o la práctica lo exige expresamente), se toman las capturas reales en `Evidencias_Capturas/` y se integran en el documento. Si indica que no, se compila un reporte puramente técnico con tablas y texto.
+6. **Doble Entregable Universal Obligatorio (.docx + .pdf listo para entrega):**
+   - **Regla Estricta para Todo el Repositorio y Todas las Materias (IA, Forense, Pentesting):**
+     CADA reporte o investigación generado en Word (.docx) debe compilarse y exportarse **OBLIGATORIAMENTE** acompañado de su versión en formato PDF (.pdf) idéntica, limpia y lista para entrega inmediata.
+   - **Cero Marcas de Agua:** La exportación a PDF debe realizarse de forma automática y transparente sin marcas de agua de evaluación, preservando la portada institucional, la numeración de páginas, el índice nativo y el formato de tablas e imágenes.
+   - El estudiante siempre recibirá ambos archivos en su carpeta de entrega: el editable .docx y el archivo final .pdf.
+
 ---
 
 ## 1. Protocolo de Inicio: Detección de Materia y Perfil del Estudiante

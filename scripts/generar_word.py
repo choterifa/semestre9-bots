@@ -120,6 +120,65 @@ def purgar_hoja_duplicada_template(doc):
         for p in list(doc.paragraphs[2:]):
             p._p.getparent().remove(p._p)
 
+def convertir_a_pdf(ruta_docx, ruta_pdf=None):
+    """
+    Convierte un documento .docx a .pdf de forma limpia, profesional, completa y sin marcas de agua.
+    Prioriza el motor nativo WordCraft (wordcraft-cli) instalado en el sistema.
+    Aplica para todas las materias de Semestre 9 (IA, Forense y Pentesting).
+    """
+    if not ruta_pdf:
+        ruta_pdf = os.path.splitext(ruta_docx)[0] + ".pdf"
+
+    # 1. Prioridad: WordCraft CLI oficial del sistema
+    wordcraft_cli = r"C:\Program Files\WordCraft\wordcraft-cli.exe"
+    if os.path.exists(wordcraft_cli):
+        try:
+            import subprocess
+            cmd = [wordcraft_cli, "convert", ruta_docx, ruta_pdf]
+            res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            if os.path.exists(ruta_pdf) and os.path.getsize(ruta_pdf) > 0:
+                print(f"[OK] Version PDF completa generada con WordCraft en: {ruta_pdf}")
+                return ruta_pdf
+        except Exception as e:
+            print(f"[INFO] WordCraft retorno error, intentando respaldo: {e}")
+
+    # 2. Respaldo secundario: Spire.Doc + PyMuPDF
+    try:
+        import tempfile
+        import spire.doc
+        from spire.doc import Document, FileFormat
+        import pymupdf
+
+        temp_pdf = os.path.join(tempfile.gettempdir(), f"temp_{os.path.basename(ruta_pdf)}")
+        
+        doc_sp = Document()
+        doc_sp.LoadFromFile(ruta_docx)
+        doc_sp.SaveToFile(temp_pdf, FileFormat.PDF)
+        doc_sp.Close()
+
+        pdf_doc = pymupdf.open(temp_pdf)
+        for page in pdf_doc:
+            rects = page.search_for('Evaluation Warning: The document was created with Spire.Doc')
+            for rect in rects:
+                expanded_rect = pymupdf.Rect(rect.x0 - 5, rect.y0 - 2, rect.x1 + 100, rect.y1 + 15)
+                page.add_redact_annot(expanded_rect, fill=(1, 1, 1))
+            page.apply_redactions()
+
+        pdf_doc.save(ruta_pdf)
+        pdf_doc.close()
+
+        if os.path.exists(temp_pdf):
+            try:
+                os.remove(temp_pdf)
+            except Exception:
+                pass
+
+        print(f"[OK] Version PDF generada y lista en: {ruta_pdf}")
+        return ruta_pdf
+    except Exception as e:
+        print(f"[AVISO] No se pudo generar la version PDF automaticamente: {e}")
+        return None
+
 def finalizar_indice_nativo(doc, pagina_map=None):
     """
     Construye y reemplaza el bloque SDT oficial nativo de Microsoft Word
@@ -331,11 +390,14 @@ def iniciar_documento_institucional(materia, titulo_tarea, ruta_salida, fecha=No
     p_salto_desarrollo.add_run().add_break(docx.enum.text.WD_BREAK.PAGE)
     
     # Interceptar save() para garantizar que el índice nativo se finalice siempre
+    # y se genere automáticamente la versión PDF lista para entrega
     _original_save = doc.save
-    def safe_save(path_or_stream=None):
+    def safe_save(path_or_stream=None, generar_pdf=True):
         target = path_or_stream or getattr(doc, '_ruta_salida', ruta_salida)
         finalizar_indice_nativo(doc)
         _original_save(target)
+        if generar_pdf and isinstance(target, str) and target.lower().endswith(".docx"):
+            convertir_a_pdf(target)
     doc.save = safe_save
     
     return doc
@@ -425,16 +487,19 @@ def agregar_encabezado_2(doc, texto):
     })
     return p
 
-def guardar_documento(doc, ruta_salida=None, pagina_map=None):
+def guardar_documento(doc, ruta_salida=None, pagina_map=None, generar_pdf=True):
     """
-    Finaliza formalmente la Tabla de Contenidos nativa y guarda el archivo Word.
+    Finaliza formalmente la Tabla de Contenidos nativa, guarda el archivo Word
+    y genera automáticamente la versión PDF lista para entrega.
     """
     finalizar_indice_nativo(doc, pagina_map)
     target = ruta_salida or getattr(doc, '_ruta_salida', None)
     if not target:
         raise ValueError("No se especificó la ruta de salida para guardar el documento.")
-    doc.save(target)
-    print(f"✅ Documento Word guardado exitosamente en: {target}")
+    doc.save(target, generar_pdf=False)
+    print(f"[OK] Documento Word guardado exitosamente en: {target}")
+    if generar_pdf and isinstance(target, str) and target.lower().endswith(".docx"):
+        convertir_a_pdf(target)
     return target
 
 if __name__ == "__main__":
