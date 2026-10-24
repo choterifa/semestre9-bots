@@ -3,7 +3,8 @@
     "nombre_completo": "Tu Nombre Completo Aquí",
     "matricula": "04220000",
     "grado_grupo": "9° - Grupo 1",
-    "carrera": "INGENIERIA EN SISTEMAS COMPUTACIONALES"
+    "carrera": "INGENIERIA EN SISTEMAS COMPUTACIONALES",
+    "nombre_entrega": "Tu Nombre Completo Aquí"
   },
   "materias": {
     "ia": {
@@ -20,6 +21,13 @@
       "nombre": "PENTESTING",
       "docente": "MARTÍNEZ GARCÍA HOLZEN",
       "plantilla": "templates/Portada_Pentesting_Base.docx"
+    },
+    "tutorias": {
+      "nombre": "TUTORÍAS",
+      "docente": "MARTÍNEZ GARCÍA HOLZEN",
+      "plantilla": "templates/Portada_Tutorias_Base.docx",
+      "formato_entrega": "pdf",
+      "patron_archivo": "<título Moodle>_<nombre de entrega>.pdf"
     }
   },
   "preferencias": {
