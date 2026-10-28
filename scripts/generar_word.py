@@ -22,6 +22,8 @@ import html
 from datetime import datetime
 import docx
 from docx.shared import Pt, RGBColor, Inches
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import parse_xml
 from docx.oxml.ns import nsdecls
 
@@ -53,8 +55,6 @@ def obtener_plantilla(materia="ia"):
         return os.path.join(TEMPLATES_DIR, "Portada_Informatica_Forense_Base.docx")
     elif m in ["pentesting", "holzen", "olsen"]:
         return os.path.join(TEMPLATES_DIR, "Portada_Pentesting_Base.docx")
-    elif materia.lower() in ["tutorias", "tutorías", "tutoria", "tutoría"]:
-        return os.path.join(TEMPLATES_DIR, "Portada_Tutorias_Base.docx")
     else:
         return os.path.join(TEMPLATES_DIR, "Portada_Pentesting_Base.docx")
 
@@ -74,10 +74,6 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
         now = datetime.now()
         fecha = f"{now.day} de {meses[now.month - 1]} de {now.year}"
 
-    from xml.sax.saxutils import escape
-    titulo_tarea = escape(titulo_tarea)
-    estudiante = escape(estudiante)
-    fecha = escape(fecha)
     plantilla_path = obtener_plantilla(materia)
     if not os.path.exists(plantilla_path):
         raise FileNotFoundError(f"No se encontró la plantilla en {plantilla_path}")
@@ -90,10 +86,8 @@ def preparar_documento_base(materia, titulo_tarea, ruta_salida, fecha=None):
             if item.filename == "word/document.xml":
                 xml_text = content.decode("utf-8")
                 
-                xml_text = xml_text.replace("[Fecha de entrega]", fecha)
-                xml_text = xml_text.replace("[Nombre del estudiante]", estudiante)
                 # Sustituir título de la tarea
-                xml_text = xml_text.replace('[Nombre de la Tarea / Actividad]', titulo_tarea)
+                xml_text = re.sub(r'\[Nombre de la Tarea / Actividad\]', titulo_tarea, xml_text)
                 
                 # Sustituir estudiante
                 xml_text = re.sub(r'Carlos Eduardo Valencia Hernández', estudiante, xml_text)
@@ -130,27 +124,12 @@ def purgar_hoja_duplicada_template(doc):
 
 def convertir_a_pdf(ruta_docx, ruta_pdf=None):
     """
-    Convierte un documento .docx a .pdf de forma limpia, profesional, completa y sin marcas de agua.
-    Prioriza el motor nativo WordCraft (wordcraft-cli) instalado en el sistema.
+    Convierte un documento .docx a .pdf de forma limpia, profesional y sin marcas de agua.
     Aplica para todas las materias de Semestre 9 (IA, Forense y Pentesting).
     """
     if not ruta_pdf:
         ruta_pdf = os.path.splitext(ruta_docx)[0] + ".pdf"
 
-    # 1. Prioridad: WordCraft CLI oficial del sistema
-    wordcraft_cli = r"C:\Program Files\WordCraft\wordcraft-cli.exe"
-    if os.path.exists(wordcraft_cli):
-        try:
-            import subprocess
-            cmd = [wordcraft_cli, "convert", ruta_docx, ruta_pdf]
-            res = subprocess.run(cmd, capture_output=True, text=True, check=True)
-            if os.path.exists(ruta_pdf) and os.path.getsize(ruta_pdf) > 0:
-                print(f"[OK] Version PDF completa generada con WordCraft en: {ruta_pdf}")
-                return ruta_pdf
-        except Exception as e:
-            print(f"[INFO] WordCraft retorno error, intentando respaldo: {e}")
-
-    # 2. Respaldo secundario: Spire.Doc + PyMuPDF
     try:
         import tempfile
         import spire.doc
@@ -164,6 +143,7 @@ def convertir_a_pdf(ruta_docx, ruta_pdf=None):
         doc_sp.SaveToFile(temp_pdf, FileFormat.PDF)
         doc_sp.Close()
 
+        # Purgar marcas de evaluación mediante pymupdf
         pdf_doc = pymupdf.open(temp_pdf)
         for page in pdf_doc:
             rects = page.search_for('Evaluation Warning: The document was created with Spire.Doc')
@@ -510,9 +490,127 @@ def guardar_documento(doc, ruta_salida=None, pagina_map=None, generar_pdf=True):
         convertir_a_pdf(target)
     return target
 
+def aplicar_formato_parrafo(p, espacio_antes=0, espacio_despues=10, interlineado=1.15, justificar=True):
+    """
+    Aplica formato estándar institucional a un párrafo de Word.
+    Por defecto, texto 100% justificado (WD_ALIGN_PARAGRAPH.JUSTIFY) con 10 pt de separación posterior.
+    """
+    p.paragraph_format.space_before = Pt(espacio_antes)
+    p.paragraph_format.space_after = Pt(espacio_despues)
+    p.paragraph_format.line_spacing = interlineado
+    if justificar:
+        p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+
+def agregar_parrafo_cuerpo(doc, texto, negrita_prefijo=None, espacio_despues=10, justificar=True):
+    """
+    Inserta un párrafo de cuerpo institucional con texto justificado, espaciado holgado
+    y estilo sobrio (Calibri 10.5 pt).
+    """
+    p = doc.add_paragraph()
+    aplicar_formato_parrafo(p, espacio_despues=espacio_despues, justificar=justificar)
+    if negrita_prefijo:
+        r_pre = p.add_run(negrita_prefijo)
+        r_pre.font.name = "Calibri"
+        r_pre.font.size = Pt(10.5)
+        r_pre.font.bold = True
+        r_pre.font.color.rgb = RGBColor(0x22, 0x22, 0x22)
+    r = p.add_run(texto)
+    r.font.name = "Calibri"
+    r.font.size = Pt(10.5)
+    r.font.color.rgb = RGBColor(0x33, 0x33, 0x33)
+    return p
+
+def agregar_evidencia(doc, ruta_o_nombre, num_figura, pie_texto, ancho_pulgadas=5.7):
+    """
+    Inserta una captura de evidencia centrada con ancho estándar (5.7 in)
+    y su pie de figura obligatorio en cursiva (9 pt, #555555).
+    """
+    if os.path.exists(ruta_o_nombre):
+        p_img = doc.add_paragraph()
+        p_img.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_img.paragraph_format.space_before = Pt(8)
+        p_img.paragraph_format.space_after = Pt(2)
+        r_img = p_img.add_run()
+        r_img.add_picture(ruta_o_nombre, width=Inches(ancho_pulgadas))
+
+        p_pie = doc.add_paragraph()
+        p_pie.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p_pie.paragraph_format.space_before = Pt(2)
+        p_pie.paragraph_format.space_after = Pt(10)
+        r_pie = p_pie.add_run(f"Figura {num_figura}: {pie_texto}")
+        r_pie.font.name = "Calibri"
+        r_pie.font.size = Pt(9)
+        r_pie.font.italic = True
+        r_pie.font.color.rgb = RGBColor(0x55, 0x55, 0x55)
+        return p_img
+    else:
+        print(f"[WARN] No se encontró la imagen de evidencia: {ruta_o_nombre}")
+        return None
+
+def agregar_tabla_grid(doc, headers, data, anchos=None):
+    """
+    Crea una tabla con cuadrícula formal institucional (bordes #0F4761/#CCCCCC),
+    encabezados en negrita centrados, cantSplit en filas y tblHeader.
+    """
+    table = doc.add_table(rows=len(data) + 1, cols=len(headers))
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+
+    tblBorders = parse_xml(f'''
+        <w:tblBorders {nsdecls("w")}>
+            <w:top w:val="single" w:sz="6" w:space="0" w:color="0F4761"/>
+            <w:left w:val="single" w:sz="4" w:space="0" w:color="CCCCCC"/>
+            <w:bottom w:val="single" w:sz="6" w:space="0" w:color="0F4761"/>
+            <w:right w:val="single" w:sz="4" w:space="0" w:color="CCCCCC"/>
+            <w:insideH w:val="single" w:sz="4" w:space="0" w:color="D9D9D9"/>
+            <w:insideV w:val="single" w:sz="4" w:space="0" w:color="D9D9D9"/>
+        </w:tblBorders>
+    ''')
+    table._tbl.tblPr.append(tblBorders)
+
+    for row in table.rows:
+        trPr = row._tr.get_or_add_trPr()
+        trPr.append(parse_xml(f'<w:cantSplit {nsdecls("w")}/>'))
+    hdr_trPr = table.rows[0]._tr.get_or_add_trPr()
+    hdr_trPr.append(parse_xml(f'<w:tblHeader {nsdecls("w")}/>'))
+
+    hdr_cells = table.rows[0].cells
+    for idx, text in enumerate(headers):
+        hdr_cells[idx].text = text
+        p = hdr_cells[idx].paragraphs[0]
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p.paragraph_format.space_before = Pt(4)
+        p.paragraph_format.space_after = Pt(4)
+        for r in p.runs:
+            r.font.name = "Calibri"
+            r.font.size = Pt(9.5)
+            r.font.bold = True
+            r.font.color.rgb = AZUL_INSTITUCIONAL
+        if anchos and idx < len(anchos):
+            hdr_cells[idx].width = Inches(anchos[idx])
+
+    for row_idx, row_data in enumerate(data):
+        row_cells = table.rows[row_idx + 1].cells
+        for col_idx, cell_value in enumerate(row_data):
+            row_cells[col_idx].text = str(cell_value)
+            p = row_cells[col_idx].paragraphs[0]
+            p.paragraph_format.space_before = Pt(3)
+            p.paragraph_format.space_after = Pt(3)
+            p.paragraph_format.line_spacing = 1.05
+            for r in p.runs:
+                r.font.name = "Calibri"
+                r.font.size = Pt(9.0)
+                r.font.color.rgb = GRIS_TEXTO
+            if anchos and col_idx < len(anchos):
+                row_cells[col_idx].width = Inches(anchos[col_idx])
+
+    p_sp = doc.add_paragraph()
+    p_sp.paragraph_format.space_before = Pt(0)
+    p_sp.paragraph_format.space_after = Pt(6)
+    return table
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Uso: python3 generar_word.py <materia: ia|forense|pentesting|tutorias> <titulo_tarea> [ruta_salida]")
+        print("Uso: python3 generar_word.py <materia: ia|forense|pentesting> <titulo_tarea> [ruta_salida]")
         sys.exit(1)
         
     materia = sys.argv[1]
