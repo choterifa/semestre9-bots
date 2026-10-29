@@ -80,6 +80,55 @@ Estas reglas aplican **obligatoriamente y sin excepción** a TODOS los reportes 
 
 ---
 
+## 🛑 0.2. Reglas Estrictas Oficiales para el Portafolio de Evidencias (Pentesting y Asignaturas ITSP)
+
+Estas reglas definen el estándar institucional obligatorio para compilar el **Portafolio de Evidencias** en la materia de **Pentesting** (Docente: Dr. Holzen A. Martínez García) y asignaturas del 9° Semestre ISC:
+
+1. **Estructura General y Portada Oficial en Hoja 1:**
+   - La portada institucional oficial debe mantenerse intacta, con la tabla de datos del estudiante:
+     - **Estudiante:** `Valencia Hernández Carlos Eduardo`
+     - **Matrícula:** `04220057`
+     - **Carrera:** `Ingeniería en Sistemas Computacionales`
+     - **Semestre:** `9° - Grupo 1`
+     - **Docente:** `Dr. Holzen A. Martínez García`
+     - **Materia:** `Pentesting`
+2. **Índice de Contenido Exclusivo en Hoja 2 (Sin Subíndices Internos):**
+   - La Página 2 queda reservada única y exclusivamente para el **Índice de Contenido**, configurado con el campo nativo de Word:
+     `TOC \o "1-2" \h \z`
+   - **Regla Estricta: PROHIBIDO incluir subíndices de secciones internas.** El índice debe ser limpio y listar exclusivamente:
+     - Las Unidades / Parciales principales (`Heading 1`).
+     - Los títulos de cada Tarea (`Heading 2`).
+     - Los 3 elementos de evaluación y conclusiones de cada unidad (`Heading 2`).
+   - Para evitar que las secciones internas de cada tarea (`1. Introducción`, `2. Alcance`, etc.) saturen el índice, deben configurarse obligatoriamente en estilo `Normal` (con formato en negrita de 13 pt / 11.5 pt y color institucional `#102C57`).
+3. **Hoja de Presentación / Separador entre Unidades (Centrado Vertical y Horizontal):**
+   - Entre cada unidad debe insertarse una **hoja de presentación exclusiva** que divide los parciales.
+   - **Centrado Vertical Obligatorio:** Debe configurarse mediante una sección de Word con alineación vertical centrada (`<w:vAlign w:val="center"/>`) o espaciado de sección equivalente, de modo que el texto quede exactamente en el centro de la página.
+   - **Centrado Horizontal y Tipografía:**
+     - `Parcial X` (26 pt, negrita, color guinda institucional `#8B1E3F`, centrado).
+     - `Unidad X: [Nombre de la Unidad]` (18 pt, negrita, color guinda institucional `#8B1E3F`, centrado).
+   - En página propia y exclusiva con saltos de página antes y después.
+4. **Separador de Cada Tarea (`Salto de Hoja` Obligatorio):**
+   - Cada tarea dentro de la unidad debe comenzar con una **página separadora / portada de tarea** (`page_break_before = True`).
+   - Solo debe contener:
+     - **Título de la tarea:** `Tarea X: [Nombre de la Tarea]` (`Heading 2`, Arial 16 pt, negrita, `#8B1E3F`).
+     - **Caja de Indicaciones:** Cuadro estilizado (`#F8F9FA`) con el texto oficial de indicaciones de Moodle, fechas de apertura/cierre y modalidad.
+     - **Espacio Reservado para Captura de Moodle:** Cuadro delimitado con la leyenda:
+       `[ Espacio reservado para captura de pantalla de indicaciones / rúbrica de Moodle ]`
+     - **Salto de página obligatorio (`PageBreak`) justo después del separador**, asegurando que el desarrollo de la tarea inicie limpiamente en la página siguiente.
+5. **Eliminación Obligatoria de Mini-Índices Locales (`w:sdt`):**
+   - Al incorporar tareas individuales que contaban con su propia tabla de contenido cuando eran entregables independientes, se deben purgar todos los bloques `<w:sdt>` locales para no duplicar tablas de contenido dentro del portafolio maestro.
+6. **Los 3 Elementos de Evaluación y Conclusiones al Final de CADA Unidad:**
+   - Cada unidad debe cerrar obligatoriamente con estos 3 apartados institucionales:
+     1. `Coevaluación final (parcial X)`: Matriz con los integrantes del equipo (Erick Espinosa, Osvaldo Canul, Lopez Acosta, Coba Cuevas, Promedio: 6.0).
+     2. `Autoevaluación final (parcial X)`: Matriz personal evaluada en el nivel máximo (*Siempre: 6*).
+     3. `Experiencias de aprendizaje y comentarios finales (parcial X)`: Redacción en primera persona singular (*"yo"*), auténtica, reflexiva y técnica.
+7. **Referencias Bibliográficas Consolidadas:**
+   - Lista bibliográfica unificada al final del portafolio en formato APA 7ª edición.
+8. **Doble Entregable Institucional:**
+   - Siempre generar tanto la versión editable `.docx` como el PDF limpio `.pdf` mediante `wordcraft-cli.exe convert <docx> <pdf> --update-fields`.
+
+---
+
 ## 1. Protocolo de Inicio: Detección de Materia y Perfil del Estudiante
 
 En cada interacción inicial o nueva tarea, el asistente debe ejecutar este flujo:

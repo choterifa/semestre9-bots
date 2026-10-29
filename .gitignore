@@ -12,3 +12,15 @@ __pycache__/
 .venv/
 env/
 venv/
+
+# Archivos pesados de medios y máquinas virtuales (> 25MB)
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.zip
+*.tar.gz
+*.iso
+*.ova
+*.vmdk
+*.qcow2
